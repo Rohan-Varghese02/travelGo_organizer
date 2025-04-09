@@ -115,10 +115,10 @@ class _RegisterProfileScreenState extends State<RegisterProfileScreen> {
                               imagePath != null
                                   ? FileImage(
                                     File(imagePath),
-                                  ) // Show selected image
+                                  ) 
                                   : imageUrl != null
                                   ? NetworkImage(imageUrl)
-                                      as ImageProvider // Show uploaded image
+                                      as ImageProvider 
                                   : null,
                           child:
                               (imagePath == null && imageUrl == null)

@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:travelgo_organizer/data/models/user_data.dart';
+import 'package:travelgo_organizer/data/models/organizer_data.dart';
 
 class Authservice {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -81,7 +81,8 @@ class Authservice {
       UserCredential userCredential = await firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
 
-      UserDataModel userDataModel = UserDataModel(
+      OrganizerDataModel userDataModel = OrganizerDataModel(
+        followersCount: 0,
         name: name,
         uid: userCredential.user!.uid,
         email: email,

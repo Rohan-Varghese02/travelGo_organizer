@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:travelgo_organizer/data/models/organizer_data.dart';
 import 'package:travelgo_organizer/features/view/screens/auth_screens/pending_screen.dart/pending_screen.dart';
 import 'package:travelgo_organizer/features/view/screens/home_screen/home_screen.dart';
 import 'package:travelgo_organizer/features/view/screens/auth_screens/login_screen/login_screen.dart';
@@ -21,12 +22,16 @@ class _AuthGateState extends State<AuthGate> {
             .get();
 
     if (docSnapshot.exists) {
+      final data = docSnapshot.data()!;
       final role = docSnapshot.data()!['role'];
 
       if (role == 'pending-organizer') {
-        return PendingScreen();
-      } else {
+        final organizerData = OrganizerDataModel.fromMap(data);
+        return PendingScreen(organizerData: organizerData);
+      } else if (role == 'organizer') {
         return HomeScreen();
+      } else {
+        return LoginScreen();
       }
     } else {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -63,7 +68,7 @@ class _AuthGateState extends State<AuthGate> {
                 if (roleSnapshot.hasData) {
                   return roleSnapshot.data!;
                 } else {
-                  return const LoginScreen(); // Fallback
+                  return const LoginScreen();
                 }
               },
             );

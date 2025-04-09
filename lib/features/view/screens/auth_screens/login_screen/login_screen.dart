@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travelgo_organizer/core/services/auth/auth_gate.dart';
 import 'package:travelgo_organizer/features/logic/auth/auth_bloc.dart';
-import 'package:travelgo_organizer/features/view/screens/home_screen/home_screen.dart';
 import 'package:travelgo_organizer/features/view/screens/auth_screens/login_screen/widgets/login_button.dart';
 import 'package:travelgo_organizer/features/view/screens/auth_screens/login_screen/widgets/login_footer.dart';
 import 'package:travelgo_organizer/features/view/screens/auth_screens/login_screen/widgets/login_header.dart';
