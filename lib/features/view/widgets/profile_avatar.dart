@@ -1,14 +1,15 @@
-// import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
-// class ProfileAvatar extends StatelessWidget {
-//   const ProfileAvatar({super.key});
+class ProfileAvatar extends StatelessWidget {
+  final String imageUrl;
+  final double radius;
+  const ProfileAvatar({super.key, required this.radius, required this.imageUrl});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return CircleAvatar(
-//       radius: 100,
-//       backgroundColor: Colors.grey[300],
-//       child: Icon(Icons.supervised_user_circle_rounded),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return CircleAvatar(
+      radius: radius,
+      backgroundImage: NetworkImage(imageUrl),
+    );
+  }
+}

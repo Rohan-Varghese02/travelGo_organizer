@@ -10,6 +10,11 @@ class Authservice {
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  String getUserUid() {
+    User? user = firebaseAuth.currentUser;
+    return user!.uid;
+  }
+
   ///----- Signin With Email and Password
   Future<UserCredential> signInWithEmailAndPassword(
     String email,
@@ -93,6 +98,7 @@ class Authservice {
         designation: designation,
         about: about,
         experience: experience,
+        eventHosted: 0,
       );
       firestore
           .collection("Organizers")

@@ -19,6 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<VisibillityButtonClicked>(visibillityButtonClicked);
     on<CheckLoginEvent>(checkLoginEvent);
     on<LogOutButtonClicked>(logOutButtonClicked);
+    on<LogOutDailogOpenEvent>(logOutDailogOpenEvent);
     on<JoinButtonClicked>(joinButtonClicked);
     on<AlreadyMemeber>(alreadyMemeber);
     on<GoogleSignInEvent>(googleSignIn);
@@ -187,5 +188,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   FutureOr<void> noImageEvent(NoImageEvent event, Emitter<AuthState> emit) {
     emit(NoImageState());
+  }
+
+  FutureOr<void> logOutDailogOpenEvent(
+    LogOutDailogOpenEvent event,
+    Emitter<AuthState> emit,
+  ) {
+    emit(LogoutDailogOpenState());
   }
 }

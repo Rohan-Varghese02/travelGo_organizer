@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class OrganizerDataModel {
   final String name;
   final String uid;
@@ -11,6 +13,7 @@ class OrganizerDataModel {
   final String about;
   final String experience;
   int? followersCount;
+  int? eventHosted;
 
   OrganizerDataModel({
     required this.company,
@@ -25,6 +28,7 @@ class OrganizerDataModel {
     required this.phoneNumber,
     required this.imageUrl,
     required this.followersCount,
+    required this.eventHosted,
   });
   Map<String, dynamic> toMap() {
     return {
@@ -40,6 +44,7 @@ class OrganizerDataModel {
       "about": about,
       "experience": experience,
       "followers": 0,
+      "eventHosted": 0,
     };
   }
 
@@ -57,6 +62,61 @@ class OrganizerDataModel {
       about: map['about'] ?? '',
       experience: map['experience'] ?? '',
       followersCount: map['followers'],
+      eventHosted: map['eventHosted'],
+    );
+  }
+  factory OrganizerDataModel.fromFireStore(DocumentSnapshot doc) {
+    final map = doc.data() as Map<String, dynamic>;
+    return OrganizerDataModel.fromMap(map);
+  }
+}
+
+class OrganizerUpdateModel {
+  final String name;
+  final String uid;
+  final String email;
+  final String phoneNumber;
+  final String imageUrl;
+  final String company;
+  final String designation;
+  final String about;
+  final String experience;
+  OrganizerUpdateModel({
+    required this.company,
+    required this.designation,
+    required this.about,
+    required this.experience,
+    required this.name,
+    required this.uid,
+    required this.email,
+    required this.phoneNumber,
+    required this.imageUrl,
+  });
+  Map<String, dynamic> toMap() {
+    return {
+      "name": name,
+      "uid": uid,
+      "email": email,
+      "phoneNumber": phoneNumber,
+      "imageUrl": imageUrl,
+      "company": company,
+      "designation": designation,
+      "about": about,
+      "experience": experience,
+    };
+  }
+
+  factory OrganizerUpdateModel.fromMap(Map<String, dynamic> map) {
+    return OrganizerUpdateModel(
+      name: map['name'] ?? '',
+      uid: map['uid'] ?? '',
+      email: map['email'] ?? '',
+      phoneNumber: map['phoneNumber'] ?? '',
+      imageUrl: map['imageUrl'] ?? '',
+      company: map['company'] ?? '',
+      designation: map['designation'] ?? '',
+      about: map['about'] ?? '',
+      experience: map['experience'] ?? '',
     );
   }
 }

@@ -28,6 +28,7 @@ class LoginFailedState extends AuthState {
 }
 
 class LogoutState extends AuthState {}
+class LogoutDailogOpenState extends AuthState{}
 
 class NavigateToRegister extends AuthState {}
 

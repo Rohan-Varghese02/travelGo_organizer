@@ -17,6 +17,9 @@ class CheckLoginEvent extends AuthEvent {
 
 class LogOutButtonClicked extends AuthEvent {}
 
+class LogOutDailogOpenEvent extends AuthEvent{}
+
+
 class JoinButtonClicked extends AuthEvent {}
 
 class VisibillityButtonClicked extends AuthEvent {

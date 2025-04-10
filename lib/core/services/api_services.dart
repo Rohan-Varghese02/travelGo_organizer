@@ -18,10 +18,8 @@ class ApiServices {
       if (response.statusCode == 200) {
         var responseData = json.decode(await response.stream.bytesToString());
         imageUrl = responseData['secure_url'];
-        // emit(ProfileImageUploaded(imageUrl));
       } else {
         print(response.statusCode);
-        // emit(ProfileError("Failed to upload image"));
       }
       return imageUrl;
     } catch (e) {

@@ -23,6 +23,7 @@ class RegisterProfileScreen extends StatefulWidget {
 }
 
 class _RegisterProfileScreenState extends State<RegisterProfileScreen> {
+  final key_State = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -92,104 +93,127 @@ class _RegisterProfileScreenState extends State<RegisterProfileScreen> {
                       );
                     });
                   }
-                  return Column(
-                    children: [
-                      SizedBox(height: 20),
-                      Text(
-                        'Profile',
-                        style: GoogleFonts.poppins(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
+                  return Form(
+                    key: key_State,
+                    child: Column(
+                      children: [
+                        SizedBox(height: 20),
+                        Text(
+                          'Profile',
+                          style: GoogleFonts.poppins(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 40),
+                        SizedBox(height: 40),
 
-                      GestureDetector(
-                        onTap: () {
-                          log('Profile pic to be uploaded');
-                          context.read<AuthBloc>().add(PickImageEvent());
-                        },
-                        child: CircleAvatar(
-                          radius: 100,
-                          backgroundImage:
-                              imagePath != null
-                                  ? FileImage(
-                                    File(imagePath),
-                                  ) 
-                                  : imageUrl != null
-                                  ? NetworkImage(imageUrl)
-                                      as ImageProvider 
-                                  : null,
-                          child:
-                              (imagePath == null && imageUrl == null)
-                                  ? Icon(Icons.camera_alt, size: 30)
-                                  : null,
+                        GestureDetector(
+                          onTap: () {
+                            log('Profile pic to be uploaded');
+                            context.read<AuthBloc>().add(PickImageEvent());
+                          },
+                          child: CircleAvatar(
+                            radius: 100,
+                            backgroundImage:
+                                imagePath != null
+                                    ? FileImage(File(imagePath))
+                                    : imageUrl != null
+                                    ? NetworkImage(imageUrl) as ImageProvider
+                                    : null,
+                            child:
+                                (imagePath == null && imageUrl == null)
+                                    ? Icon(Icons.camera_alt, size: 30)
+                                    : null,
+                          ),
                         ),
-                      ),
 
-                      SizedBox(height: 20),
-                      HeadingTextField(
-                        headline: 'Full Name',
-                        controller: nameController,
-                        hint: 'Enter your name',
-                      ),
-                      SizedBox(height: 20),
-                      HeadingTextField(
-                        readOnly: true,
-                        headline: 'Email',
-                        controller: emailController,
-                        hint: 'Enter your name',
-                      ),
-                      SizedBox(height: 20),
-                      HeadingTextField(
-                        headline: 'Phone Number',
-                        controller: phoneController,
-                        hint: 'Enter your phone number',
-                      ),
-                      SizedBox(height: 20),
-                      HeadingTextField(
-                        headline: 'Name of Company',
-                        controller: companyController,
-                        hint: 'Enter your company name',
-                      ),
-                      SizedBox(height: 20),
-                      HeadingTextField(
-                        headline: 'Designation',
-                        controller: designationController,
-                        hint: 'Enter your designation',
-                      ),
-                      SizedBox(height: 20),
-                      HeadingTextField(
-                        headline: 'About',
-                        controller: aboutController,
-                        hint: 'Tell about yourself',
-                      ),
-                      SizedBox(height: 20),
-                      HeadingTextField(
-                        headline: 'Experience with Company',
-                        controller: experienceController,
-                        hint: 'Enter your experience',
-                      ),
-                      SizedBox(height: 20),
-                      LongButton(
-                        text: 'Register',
-                        onPressed: () {
-                          if (imagePath != null) {
-                            context.read<AuthBloc>().add(
-                              UploadImageEvent(imagePath: imagePath),
-                            );
-                          } else {
-                            context.read<AuthBloc>().add(NoImageEvent());
-                          }
+                        SizedBox(height: 20),
+                        HeadingTextField(
+                          headline: 'Full Name',
+                          controller: nameController,
+                          hint: 'Enter your name',
+                          validator: (value) {
+                            return textValidator(value);
+                          },
+                        ),
+                        SizedBox(height: 20),
+                        HeadingTextField(
+                          readOnly: true,
+                          headline: 'Email',
+                          controller: emailController,
+                          hint: 'Enter your name',
+                          validator: (value) {
+                            return textValidator(value);
+                          },
+                        ),
+                        SizedBox(height: 20),
+                        HeadingTextField(
+                          headline: 'Phone Number',
+                          controller: phoneController,
+                          hint: 'Enter your phone number',
+                          validator: (value) {
+                            return textValidator(value);
+                          },
+                        ),
+                        SizedBox(height: 20),
+                        HeadingTextField(
+                          headline: 'Name of Company',
+                          controller: companyController,
+                          hint: 'Enter your company name',
+                          validator: (value) {
+                            return textValidator(value);
+                          },
+                        ),
+                        SizedBox(height: 20),
+                        HeadingTextField(
+                          headline: 'Designation',
+                          controller: designationController,
+                          hint: 'Enter your designation',
+                          validator: (value) {
+                            return textValidator(value);
+                          },
+                        ),
+                        SizedBox(height: 20),
+                        HeadingTextField(
+                          headline: 'About',
+                          controller: aboutController,
+                          hint: 'Tell about yourself',
+                          validator: (value) {
+                            return textValidator(value);
+                          },
+                        ),
+                        SizedBox(height: 20),
+                        HeadingTextField(
+                          headline: 'Experience with Company',
+                          controller: experienceController,
+                          hint: 'Enter your experience',
+                          validator: (value) {
+                            return textValidator(value);
+                          },
+                        ),
+                        SizedBox(height: 20),
+                        LongButton(
+                          text: 'Register',
+                          onPressed: () {
+                            if (key_State.currentState!.validate()) {
+                              if (imagePath != null) {
+                                context.read<AuthBloc>().add(
+                                  UploadImageEvent(imagePath: imagePath),
+                                );
+                              } else {
+                                context.read<AuthBloc>().add(NoImageEvent());
+                              }
 
-                          log(nameController.text);
-                          log(emailController.text);
-                          log(phoneController.text);
-                          log(widget.password);
-                          log(imageUrl.toString());
-                        },
-                      ),
-                    ],
+                              log(nameController.text);
+                              log(emailController.text);
+                              log(phoneController.text);
+                              log(widget.password);
+                              log(imageUrl.toString());
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   );
                 },
               ),
@@ -199,4 +223,11 @@ class _RegisterProfileScreenState extends State<RegisterProfileScreen> {
       ),
     );
   }
+}
+
+String? textValidator(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'Fill the Field';
+  }
+  return null;
 }
