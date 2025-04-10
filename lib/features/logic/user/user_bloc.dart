@@ -68,25 +68,37 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     Emitter<UserState> emit,
   ) async {
     final api = ApiServices();
+    String imagePublicID = event.imagePublicID;
     String imageUrl = event.imageUrl;
-    log(event.imagePath.toString());
-    if (event.imagePath != null) {
-      imageUrl = await api.getUploadUrl(event.imagePath!);
-    }
-    OrganizerUpdateModel organizer = OrganizerUpdateModel(
-      company: event.company,
-      designation: event.designation,
-      about: event.about,
-      experience: event.experience,
-      name: event.name,
-      uid: event.uid,
-      email: event.email,
-      phoneNumber: event.phone,
-      imageUrl: imageUrl,
-    );
-    final firestore = FirestoreService();
+
     try {
-      firestore.updateOrganizerInFirestore(organizer);
+      if (event.imagePath != null) {
+        if (event.imagePublicID.isNotEmpty) {
+          final deleted = await api.deleteImageFromCloudinary(
+            event.imagePublicID,
+          );
+          if (!deleted) {
+            log("Failed to delete old image.");
+          }
+        }
+        Map<String, String> url = await api.getUploadUrl(event.imagePath!);
+        imageUrl = url['imageUrl']!;
+        imagePublicID = url['publicId']!;
+      }
+      OrganizerUpdateModel organizer = OrganizerUpdateModel(
+        company: event.company,
+        designation: event.designation,
+        about: event.about,
+        experience: event.experience,
+        name: event.name,
+        uid: event.uid,
+        email: event.email,
+        phoneNumber: event.phone,
+        imageUrl: imageUrl,
+        imagePublicID: imagePublicID,
+      );
+      final firestore = FirestoreService();
+      await firestore.updateOrganizerInFirestore(organizer);
       emit(ProfileUpdateSuccess());
       OrganizerDataModel organizerData = await firestore.getOrganizer(
         event.uid,

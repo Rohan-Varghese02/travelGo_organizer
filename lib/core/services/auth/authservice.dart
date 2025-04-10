@@ -71,7 +71,8 @@ class Authservice {
   }
 
   Future<UserCredential> signUpWithEmailAndPassword(
-    String name,
+    String imagePublicId,
+    name,
     email,
     password,
     role,
@@ -87,6 +88,7 @@ class Authservice {
           .createUserWithEmailAndPassword(email: email, password: password);
 
       OrganizerDataModel userDataModel = OrganizerDataModel(
+        imagePublicId: imagePublicId,
         followersCount: 0,
         name: name,
         uid: userCredential.user!.uid,

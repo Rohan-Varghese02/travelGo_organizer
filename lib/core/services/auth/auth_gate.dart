@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:travelgo_organizer/data/models/organizer_data.dart';
 import 'package:travelgo_organizer/features/view/screens/auth_screens/pending_screen.dart/pending_screen.dart';
-import 'package:travelgo_organizer/features/view/screens/home_screen/home_screen.dart';
 import 'package:travelgo_organizer/features/view/screens/auth_screens/login_screen/login_screen.dart';
 import 'package:travelgo_organizer/features/view/screens/main_screens/main_screen.dart';
 

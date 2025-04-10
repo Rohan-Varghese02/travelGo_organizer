@@ -12,10 +12,12 @@ class OrganizerDataModel {
   final String designation;
   final String about;
   final String experience;
+  final String imagePublicId;
   int? followersCount;
   int? eventHosted;
 
   OrganizerDataModel({
+    required this.imagePublicId,
     required this.company,
     required this.designation,
     required this.about,
@@ -32,6 +34,7 @@ class OrganizerDataModel {
   });
   Map<String, dynamic> toMap() {
     return {
+      "imagePublicID": imagePublicId,
       "name": name,
       "uid": uid,
       "email": email,
@@ -50,6 +53,7 @@ class OrganizerDataModel {
 
   factory OrganizerDataModel.fromMap(Map<String, dynamic> map) {
     return OrganizerDataModel(
+      imagePublicId: map['imagePublicID'],
       name: map['name'] ?? '',
       role: map['role'] ?? '',
       uid: map['uid'] ?? '',
@@ -72,6 +76,7 @@ class OrganizerDataModel {
 }
 
 class OrganizerUpdateModel {
+  final String imagePublicID;
   final String name;
   final String uid;
   final String email;
@@ -82,6 +87,7 @@ class OrganizerUpdateModel {
   final String about;
   final String experience;
   OrganizerUpdateModel({
+    required this.imagePublicID,
     required this.company,
     required this.designation,
     required this.about,
@@ -94,6 +100,7 @@ class OrganizerUpdateModel {
   });
   Map<String, dynamic> toMap() {
     return {
+      "imagePublicID": imagePublicID,
       "name": name,
       "uid": uid,
       "email": email,
@@ -108,6 +115,7 @@ class OrganizerUpdateModel {
 
   factory OrganizerUpdateModel.fromMap(Map<String, dynamic> map) {
     return OrganizerUpdateModel(
+      imagePublicID: map['imagePublicID'],
       name: map['name'] ?? '',
       uid: map['uid'] ?? '',
       email: map['email'] ?? '',

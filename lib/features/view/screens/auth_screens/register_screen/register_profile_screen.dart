@@ -47,11 +47,14 @@ class _RegisterProfileScreenState extends State<RegisterProfileScreen> {
                 builder: (context, state) {
                   String? imagePath;
                   String? imageUrl;
+                  String? imagePublicId;
 
                   if (state is ProfileImagePicked) {
                     imagePath = state.imagePath;
                   } else if (state is ProfileImageUploaded) {
+                    imagePublicId = state.imagePublicId;
                     imageUrl = state.imageUrl;
+                    log(state.imagePublicId);
                     log(state.imageUrl);
                     context.read<AuthBloc>().add(
                       RegisterUser(
@@ -64,6 +67,7 @@ class _RegisterProfileScreenState extends State<RegisterProfileScreen> {
                         nameOfCompany: companyController.text,
                         designation: designationController.text,
                         about: aboutController.text,
+                        imagePublicId: imagePublicId,
                       ),
                     );
                   } else if (state is RegisterSuccessful) {

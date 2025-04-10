@@ -28,7 +28,8 @@ class LoginFailedState extends AuthState {
 }
 
 class LogoutState extends AuthState {}
-class LogoutDailogOpenState extends AuthState{}
+
+class LogoutDailogOpenState extends AuthState {}
 
 class NavigateToRegister extends AuthState {}
 
@@ -76,7 +77,8 @@ class ProfileImageUploading extends AuthState {}
 
 class ProfileImageUploaded extends AuthState {
   final String imageUrl;
-  ProfileImageUploaded(this.imageUrl);
+  final String imagePublicId;
+  ProfileImageUploaded(this.imageUrl, this.imagePublicId);
 }
 
 class ProfileError extends AuthState {
@@ -84,8 +86,8 @@ class ProfileError extends AuthState {
   ProfileError(this.message);
 }
 
-class RegisterationError extends AuthState{}
+class RegisterationError extends AuthState {}
 
-class RegisterSuccessful extends AuthState{}
+class RegisterSuccessful extends AuthState {}
 
-class NoImageState extends AuthState{}
+class NoImageState extends AuthState {}

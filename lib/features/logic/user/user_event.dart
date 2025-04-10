@@ -14,6 +14,7 @@ class UpdateImageEvent extends UserEvent {}
 class ProfileUpdatIntiate extends UserEvent{}
 
 class UpdateProfileEvent extends UserEvent {
+  final String imagePublicID;
   final String imageUrl;
   final String uid;
   final String? imagePath;
@@ -26,6 +27,7 @@ class UpdateProfileEvent extends UserEvent {
   final String experience;
 
   UpdateProfileEvent({
+    required this.imagePublicID,
     required this.imageUrl,
     required this.uid,
     required this.imagePath,

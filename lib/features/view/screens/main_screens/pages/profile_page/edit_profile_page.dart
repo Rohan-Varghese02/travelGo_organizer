@@ -67,6 +67,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             designation: designationController.text,
                             about: aboutController.text,
                             experience: expController.text,
+                            imagePublicID: widget.organizerdata.imagePublicId,
                           ),
                         );
                       }

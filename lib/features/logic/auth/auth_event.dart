@@ -17,8 +17,7 @@ class CheckLoginEvent extends AuthEvent {
 
 class LogOutButtonClicked extends AuthEvent {}
 
-class LogOutDailogOpenEvent extends AuthEvent{}
-
+class LogOutDailogOpenEvent extends AuthEvent {}
 
 class JoinButtonClicked extends AuthEvent {}
 
@@ -74,8 +73,10 @@ class RegisterUser extends AuthEvent {
   final String designation;
   final String about;
   final String experience;
+  final String imagePublicId;
 
-  RegisterUser({
+  RegisterUser( {
+    required this.imagePublicId,
     required this.nameOfCompany,
     required this.designation,
     required this.about,

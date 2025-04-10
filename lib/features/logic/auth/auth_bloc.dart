@@ -157,8 +157,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(ProfileImageUploading());
     final apiservices = ApiServices();
-    String imageUrl = await apiservices.getUploadUrl(event.imagePath);
-    emit(ProfileImageUploaded(imageUrl));
+    Map<String, String> urls = await apiservices.getUploadUrl(event.imagePath);
+    String? imageUrl = urls['imageUrl'];
+    String? imagePublicID = urls['publicId'];
+   
+    emit(ProfileImageUploaded(imageUrl!, imagePublicID!));
   }
 
   FutureOr<void> registerUser(
@@ -168,6 +171,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final authservices = Authservice();
     try {
       await authservices.signUpWithEmailAndPassword(
+        event.imagePublicId,
         event.name,
         event.email,
         event.password,
