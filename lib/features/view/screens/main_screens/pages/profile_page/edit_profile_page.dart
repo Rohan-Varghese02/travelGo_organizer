@@ -104,6 +104,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
                 SizedBox(height: 10),
                 HeadingTextField(
+                  readOnly: true,
                   colortext: themeColor,
                   headline: 'Email',
                   controller: emailController,

@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 import 'package:travelgo_organizer/core/services/api_services.dart';
 import 'package:travelgo_organizer/core/services/auth/authservice.dart';
+import 'package:travelgo_organizer/core/services/firestore_service.dart';
 import 'package:travelgo_organizer/core/services/local_storage.dart';
 
 part 'auth_event.dart';
@@ -23,7 +24,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<JoinButtonClicked>(joinButtonClicked);
     on<AlreadyMemeber>(alreadyMemeber);
     on<GoogleSignInEvent>(googleSignIn);
-
     on<RegisterButtonEvent>(registerButtonEvent);
     //////////////////////
     ///
@@ -33,6 +33,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<RegisterUser>(registerUser);
 
     on<NoImageEvent>(noImageEvent);
+    on<ReapplyEvent>(reapplyEvent);
   }
 
   FutureOr<void> intialSplashEvent(
@@ -160,7 +161,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Map<String, String> urls = await apiservices.getUploadUrl(event.imagePath);
     String? imageUrl = urls['imageUrl'];
     String? imagePublicID = urls['publicId'];
-   
+
     emit(ProfileImageUploaded(imageUrl!, imagePublicID!));
   }
 
@@ -199,5 +200,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) {
     emit(LogoutDailogOpenState());
+  }
+
+  FutureOr<void> reapplyEvent(ReapplyEvent event, Emitter<AuthState> emit) {
+    final firestore = FirestoreService();
+    firestore.reapplyOrganizer(event.uid);
+    emit(ReApplySuccessState());
   }
 }

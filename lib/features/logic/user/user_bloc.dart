@@ -48,9 +48,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     UpdateImageEvent event,
     Emitter<UserState> emit,
   ) async {
-    final ImagePicker _picker = ImagePicker();
+    final ImagePicker picker = ImagePicker();
     try {
-      final XFile? pickedFile = await _picker.pickImage(
+      final XFile? pickedFile = await picker.pickImage(
         source: ImageSource.gallery,
       );
       if (pickedFile != null) {

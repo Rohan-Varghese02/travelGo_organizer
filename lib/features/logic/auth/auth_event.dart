@@ -75,7 +75,7 @@ class RegisterUser extends AuthEvent {
   final String experience;
   final String imagePublicId;
 
-  RegisterUser( {
+  RegisterUser({
     required this.imagePublicId,
     required this.nameOfCompany,
     required this.designation,
@@ -87,4 +87,10 @@ class RegisterUser extends AuthEvent {
     required this.phoneNumber,
     required this.imageUrl,
   });
+}
+
+class ReapplyEvent extends AuthEvent {
+  final String uid;
+
+  ReapplyEvent({required this.uid});
 }

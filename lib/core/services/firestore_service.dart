@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:travelgo_organizer/data/models/organizer_data.dart';
 
 class FirestoreService {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   Future<void> updateOrganizerInFirestore(
     OrganizerUpdateModel organizer,
   ) async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
     await firestore
         .collection('Organizers')
         .doc(organizer.uid)
@@ -13,12 +13,14 @@ class FirestoreService {
   }
 
   Future<OrganizerDataModel> getOrganizer(String uid) async {
-    final doc =
-        await FirebaseFirestore.instance
-            .collection('Organizers')
-            .doc(uid)
-            .get();
+    final doc = await firestore.collection('Organizers').doc(uid).get();
 
     return OrganizerDataModel.fromMap(doc.data()!);
+  }
+
+  void reapplyOrganizer(String id) {
+    firestore.collection('Organizers').doc(id).update({
+      'role': 'pending-organizer',
+    });
   }
 }

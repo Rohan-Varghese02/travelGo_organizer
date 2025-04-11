@@ -149,14 +149,14 @@ class RegisterScreen extends StatelessWidget {
                       confirmPassController: confirmpassRegController,
                     ),
                     SizedBox(height: 20),
-                    DividerWithOr(),
-                    SizedBox(height: 20),
-                    GoogleButton(
-                      onTap: () {
-                        Navigator.pop(context);
-                        context.read<AuthBloc>().add(GoogleSignInEvent());
-                      },
-                    ),
+                    // DividerWithOr(),
+                    // SizedBox(height: 20),
+                    // GoogleButton(
+                    //   onTap: () {
+                    //     Navigator.pop(context);
+                    //     context.read<AuthBloc>().add(GoogleSignInEvent());
+                    //   },
+                    // ),
                     SizedBox(height: 80),
                     RegisterFooter(
                       onTap: () {

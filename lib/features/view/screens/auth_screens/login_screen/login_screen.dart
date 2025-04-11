@@ -121,15 +121,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                         },
                       ),
-                      SizedBox(height: 20),
-                      DividerWithOr(),
+                      // SizedBox(height: 20),
+                      // DividerWithOr(),
                       SizedBox(height: 20),
 
-                      GoogleButton(
-                        onTap: () {
-                          context.read<AuthBloc>().add(GoogleSignInEvent());
-                        },
-                      ),
+                      // GoogleButton(
+                      //   onTap: () {
+                      //     context.read<AuthBloc>().add(GoogleSignInEvent());
+                      //   },
+                      // ),
                     ],
                   ),
                 ),

@@ -40,8 +40,6 @@ class ApiServices {
 
       if (response.statusCode == 200) {
         var responseData = json.decode(await response.stream.bytesToString());
-
-        // ✅ Return both public_id and secure_url
         return {
           'imageUrl': responseData['secure_url'],
           'publicId': responseData['public_id'],
