@@ -9,3 +9,6 @@ final grey20 = Color(0xffe6e6e6);
 final grey30 = Color(0xffcccccc);
 
 final grey99 = Color(0xff999999);
+
+final lightblue = Color(0xffCBE1FF);
+final whiteBg = Color(0xffFAFAFA);

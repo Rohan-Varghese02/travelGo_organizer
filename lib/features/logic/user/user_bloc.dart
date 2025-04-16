@@ -20,6 +20,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<UpdateImageEvent>(updateImageEvent);
     on<ProfileUpdatIntiate>(profileUpdatIntiate);
     on<UpdateProfileEvent>(updateProfileEvent);
+
+    // Dashboard (Home Page Actions)
+    on<CreateEventClicked>(createEventClicked);
   }
 
   // Profile Page ------- Edit Logic
@@ -115,5 +118,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     Emitter<UserState> emit,
   ) {
     emit(UserProfileIntiated());
+  }
+
+  FutureOr<void> createEventClicked(
+    CreateEventClicked event,
+    Emitter<UserState> emit,
+  ) {
+    log('Create Event Intitate');
+    emit(CreateEventIntitated());
   }
 }

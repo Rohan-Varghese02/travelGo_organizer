@@ -111,4 +111,14 @@ class Authservice {
       throw Exception(e.code);
     }
   }
+
+    Future<void> resetPasswordEmail(String email) async {
+    try {
+      await firebaseAuth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e.message);
+    } catch (error) {
+      throw Exception('Something went wrong');
+    }
+  }
 }

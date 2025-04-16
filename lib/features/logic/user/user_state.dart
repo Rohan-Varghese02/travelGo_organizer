@@ -12,6 +12,7 @@ class OrganizerSuccessfullyFetched extends UserState {
 
   OrganizerSuccessfullyFetched({required this.organizerDataModel});
 }
+// Profile Page ------- Edit Logic
 
 class NavigateToEditPage extends UserState {
   final OrganizerDataModel organizerData;
@@ -37,7 +38,11 @@ class ProfileUpdateSuccess extends UserState {}
 
 class ProfileUpdateFailed extends UserState {}
 
-class ProfileDetailsFetched extends UserState {
+class ProfileDetailsFetched extends UserActionState {
   final OrganizerDataModel organizerData;
   ProfileDetailsFetched({required this.organizerData});
 }
+
+// Dashboard (Home Page Actions)
+
+class CreateEventIntitated extends UserState {}

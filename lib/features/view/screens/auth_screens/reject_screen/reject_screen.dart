@@ -27,6 +27,7 @@ class _RejectScreenState extends State<RejectScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<UserBloc, UserState>(
+      buildWhen: (previous, current) => current is UserActionState,
       builder: (context, state) {
         if (state is ProfileDetailsFetched) {
           final organizerData = state.organizerData;

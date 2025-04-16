@@ -9,13 +9,16 @@ class HeadingTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final bool? readOnly;
   final Color? colortext;
+  final Color? borderColor;
   const HeadingTextField({
     super.key,
     required this.headline,
     required this.controller,
     required this.hint,
     this.validator,
-    this.readOnly, this.colortext,
+    this.readOnly,
+    this.colortext,
+    this.borderColor,
   });
 
   @override
@@ -25,17 +28,20 @@ class HeadingTextField extends StatelessWidget {
       children: [
         Text(
           headline,
-          style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500, color: colortext?? Colors.black),
+          style: GoogleFonts.poppins(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: colortext ?? Colors.black,
+          ),
         ),
         TextFormField(
-          
           readOnly: readOnly ?? false,
           validator: validator,
           controller: controller,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: grey20),
+              borderSide: BorderSide(color: borderColor ?? grey20),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: black),

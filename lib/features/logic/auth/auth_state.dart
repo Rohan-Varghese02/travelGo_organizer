@@ -39,6 +39,12 @@ class VisibleState extends AuthActionState {
   VisibleState({required this.isVisible});
 }
 
+class ForgotPasswordState extends AuthState {}
+
+class ResetPasswordSuccess extends AuthState {}
+
+class ResetPasswordFailure extends AuthState {}
+
 // Google Services
 class GoogleLoginSucess extends AuthState {
   final UserCredential userCredential;

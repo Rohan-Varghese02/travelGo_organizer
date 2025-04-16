@@ -25,6 +25,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AlreadyMemeber>(alreadyMemeber);
     on<GoogleSignInEvent>(googleSignIn);
     on<RegisterButtonEvent>(registerButtonEvent);
+        on<ForgotPasswordEvent>(forgotPasswordEvent);
+    on<ResetPasswordEvent>(resetPasswordEvent);
     //////////////////////
     ///
     ///
@@ -206,5 +208,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final firestore = FirestoreService();
     firestore.reapplyOrganizer(event.uid);
     emit(ReApplySuccessState());
+  }
+
+  FutureOr<void> forgotPasswordEvent(ForgotPasswordEvent event, Emitter<AuthState> emit) {
+       log('Forgot password');
+    emit(ForgotPasswordState());
+  }
+
+  
+
+  FutureOr<void> resetPasswordEvent(
+    ResetPasswordEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    try {
+      await Authservice().resetPasswordEmail(event.email);
+      emit(ResetPasswordSuccess());
+    } on FirebaseAuthException catch (e) {
+      emit(ResetPasswordFailure());
+      log(e.toString());
+    } catch (error) {
+      emit(ResetPasswordFailure());
+      log(error.toString());
+    }
   }
 }

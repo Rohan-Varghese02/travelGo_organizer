@@ -3,11 +3,14 @@ part of 'user_bloc.dart';
 @immutable
 sealed class UserEvent {}
 
+
+  // Profile Page ------- Edit Logic
 class UserProfileEdit extends UserEvent {
   final OrganizerDataModel organizerData;
 
   UserProfileEdit({required this.organizerData});
 }
+
 
 class UpdateImageEvent extends UserEvent {}
 
@@ -42,3 +45,8 @@ class UpdateProfileEvent extends UserEvent {
 
 }
   class FetchDetails extends UserEvent{}
+
+
+// Dashboard (Home Page Actions)
+
+class CreateEventClicked extends UserEvent{}

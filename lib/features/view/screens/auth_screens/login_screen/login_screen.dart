@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travelgo_organizer/core/services/auth/auth_gate.dart';
 import 'package:travelgo_organizer/features/logic/auth/auth_bloc.dart';
+import 'package:travelgo_organizer/features/view/screens/auth_screens/login_screen/widgets/forgot_pass.dart';
+import 'package:travelgo_organizer/features/view/screens/auth_screens/login_screen/widgets/forgot_pass_dailog.dart';
 import 'package:travelgo_organizer/features/view/screens/auth_screens/login_screen/widgets/login_button.dart';
 import 'package:travelgo_organizer/features/view/screens/auth_screens/login_screen/widgets/login_footer.dart';
 import 'package:travelgo_organizer/features/view/screens/auth_screens/login_screen/widgets/login_header.dart';
@@ -48,6 +50,24 @@ class _LoginScreenState extends State<LoginScreen> {
               } else if (state is NavigateToRegister) {
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => RegisterScreen()),
+                );
+              } else if (state is ForgotPasswordState) {
+                forgotPasswordDailog(context);
+              } else if (state is ResetPasswordSuccess) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Email has been sent'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              } else if (state is ResetPasswordFailure) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'Invalid Email Address/ It has not been registered',
+                    ),
+                    backgroundColor: Colors.red,
+                  ),
                 );
               }
             },
@@ -106,6 +126,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
                       SizedBox(height: 20),
+                      ForgotPass(),
+                      SizedBox(height: 20),
                       LoginButton(
                         text: 'Login',
                         onPressed: () {
@@ -121,15 +143,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                         },
                       ),
-                      // SizedBox(height: 20),
-                      // DividerWithOr(),
-                      SizedBox(height: 20),
 
-                      // GoogleButton(
-                      //   onTap: () {
-                      //     context.read<AuthBloc>().add(GoogleSignInEvent());
-                      //   },
-                      // ),
+                      SizedBox(height: 20),
                     ],
                   ),
                 ),
