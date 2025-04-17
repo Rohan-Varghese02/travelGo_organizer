@@ -12,7 +12,7 @@ class CreateEventFooter extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         ActionfulBtn(text: 'Prev', onPressed: prevonPressed),
-        ActionfulBtn(text: 'Host', onPressed: nextonPressed),
+        ActionfulBtn(text: 'Next', onPressed: nextonPressed),
       ],
     );
   }

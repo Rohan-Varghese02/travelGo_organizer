@@ -6,10 +6,12 @@ import 'package:travelgo_organizer/features/view/widgets/custom_txt_field.dart';
 class EventCoord extends StatelessWidget {
   final TextEditingController longitude;
   final TextEditingController lattitude;
+  final String? Function(String?)? validator;
   const EventCoord({
     super.key,
     required this.longitude,
     required this.lattitude,
+    this.validator,
   });
 
   @override
@@ -36,6 +38,7 @@ class EventCoord extends StatelessWidget {
                 hint: 'Lattitude',
                 radius: 30,
                 borderColor: themeColor,
+                validator: validator,
               ),
             ),
             SizedBox(
@@ -45,6 +48,7 @@ class EventCoord extends StatelessWidget {
                 hint: 'Longitude',
                 radius: 30,
                 borderColor: themeColor,
+                validator: validator,
               ),
             ),
           ],

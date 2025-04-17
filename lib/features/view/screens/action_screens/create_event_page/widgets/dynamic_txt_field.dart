@@ -7,7 +7,8 @@ import 'package:travelgo_organizer/features/logic/action/action_bloc.dart';
 class DynamicTxtField extends StatelessWidget {
   final int index;
   final Map<String, String>? ticket;
-  const DynamicTxtField({super.key, required this.index, required this.ticket});
+  final String? Function(String?)? validator;
+  const DynamicTxtField({super.key, required this.index, required this.ticket, this.validator});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +18,7 @@ class DynamicTxtField extends StatelessWidget {
         Expanded(
           flex: 2,
           child: TextFormField(
+            validator: validator,
             initialValue: ticket!["type"],
             onChanged: (val) {
               context.read<ActionBloc>().add(UpdateTicketType(index, val));
@@ -42,6 +44,7 @@ class DynamicTxtField extends StatelessWidget {
         Expanded(
           flex: 1,
           child: TextFormField(
+            validator: validator,
             initialValue: ticket!["count"],
             onChanged: (val) {
               context.read<ActionBloc>().add(UpdateTicketCount(index, val));

@@ -5,14 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
 import 'package:travelgo_organizer/features/logic/action/action_bloc.dart';
-import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/widgets/category_field.dart';
+import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/create_next_page.dart';
+
 import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/widgets/country_field.dart';
 import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/widgets/cover_photo.dart';
 import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/widgets/create_event_footer.dart';
-import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/widgets/dynamic_txt_field.dart';
-import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/widgets/event_coord.dart';
-import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/widgets/last_date_picker.dart';
-import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/widgets/ticket_header.dart';
+
 import 'package:travelgo_organizer/features/view/widgets/heading_text_field.dart';
 
 class CreateEventScreen extends StatefulWidget {
@@ -26,33 +24,50 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<ActionBloc>().add(LoadCategories());
     context.read<ActionBloc>().add(LoadCountries());
   }
 
   @override
   Widget build(BuildContext context) {
+    String? country;
     TextEditingController nameController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
     TextEditingController venueController = TextEditingController();
-    TextEditingController benefitsController = TextEditingController();
-    TextEditingController organizerGrpController = TextEditingController();
-    TextEditingController lattitudeController = TextEditingController();
-    TextEditingController longitudeController = TextEditingController();
-    final TextEditingController lastDateController = TextEditingController();
 
-    String? category;
-    return BlocBuilder<ActionBloc, ActionState>(
+    final key_state = GlobalKey<FormState>();
+    return BlocConsumer<ActionBloc, ActionState>(
+      listenWhen:
+          (previous, current) =>
+              current is NoCoverImage ||
+              current is CountryLoaded ||
+              current is CountryChoosed,
+      listener: (BuildContext context, ActionState state) {
+        log(state.runtimeType.toString());
+        if (state is NoCoverImage) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('No Cover Image'),
+              backgroundColor: errorred,
+            ),
+          );
+        }
+        if (state is CountryChoosed) {
+          country = state.selectedCountry;
+        }
+      },
+      buildWhen:
+          (previous, current) =>
+              current is CoverImagePicked || current is CountryLoaded,
       builder: (context, state) {
+        log(state.runtimeType.toString());
         String? imagePath;
-        // String? imageUrl;
-        // String? imagePublicId;
         if (state is CoverImagePicked) {
           imagePath = state.imagePath;
           log(imagePath);
         }
         return Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             title: Text(
               'Create Event',
               style: GoogleFonts.poppins(
@@ -66,120 +81,100 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  HeadingTextField(
-                    headline: 'Event Name:',
-                    controller: nameController,
-                    hint: 'Name of Event',
-                    borderColor: themeColor,
-                  ),
-                  SizedBox(height: 20),
-                  CoverPhoto(imagePath: imagePath),
-                  SizedBox(height: 20),
-                  HeadingTextField(
-                    headline: 'Description of Event:',
-                    controller: descriptionController,
-                    hint: 'Event Description',
-                    borderColor: themeColor,
-                  ),
-                  SizedBox(height: 20),
+              child: Form(
+                key: key_state,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    HeadingTextField(
+                      headline: 'Event Name:',
+                      controller: nameController,
+                      hint: 'Name of Event',
+                      borderColor: themeColor,
+                      validator: (p0) {
+                        return validator(p0);
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    CoverPhoto(imagePath: imagePath),
+                    SizedBox(height: 20),
+                    HeadingTextField(
+                      headline: 'Description of Event:',
+                      controller: descriptionController,
+                      hint: 'Event Description',
+                      borderColor: themeColor,
+                      validator: (p0) {
+                        return validator(p0);
+                      },
+                    ),
+                    SizedBox(height: 20),
 
-                  HeadingTextField(
-                    headline: 'Venue of Event:',
-                    controller: venueController,
-                    hint: 'Event Venue',
-                    borderColor: themeColor,
-                  ),
-                  SizedBox(height: 20),
-                  CountryField(),
-                  SizedBox(height: 10),
-                  TicketHeader(),
-                  BlocBuilder<ActionBloc, ActionState>(
-                    builder: (context, state) {
-                      if (state is TicketsUpdated) {
-                        return ListView.separated(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: state.tickets.length,
-                          itemBuilder: (context, index) {
-                            return DynamicTxtField(
-                              index: index,
-                              ticket: state.tickets[index],
+                    HeadingTextField(
+                      headline: 'Venue of Event:',
+                      controller: venueController,
+                      hint: 'Event Venue',
+                      borderColor: themeColor,
+                      validator: (p0) {
+                        return validator(p0);
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    CountryField(
+                      validator: (p0) {
+                        return validator(p0);
+                      },
+                    ),
+                    SizedBox(height: 10),
+
+                    SizedBox(height: 20),
+
+                    CreateEventFooter(
+                      nextonPressed: () {
+                        if (key_state.currentState!.validate()) {
+                          if (imagePath == null) {
+                            context.read<ActionBloc>().add(
+                              CoverImageNotFound(),
                             );
-                          },
-                          separatorBuilder: (BuildContext context, int index) {
-                            return SizedBox(height: 10);
-                          },
-                        );
-                      }
-                      return const SizedBox.shrink();
-                    },
-                  ),
-                  HeadingTextField(
-                    headline: 'Benefits of Each ticket:',
-                    controller: benefitsController,
-                    hint: 'Ticket Benefits',
-                    borderColor: themeColor,
-                  ),
-                  SizedBox(height: 20),
+                          } else {
+                            log(nameController.text);
+                            log(descriptionController.text);
+                            log(venueController.text);
+                            log(country.toString());
+                            log(imagePath);
 
-                  HeadingTextField(
-                    headline: 'Organizer Group Name:',
-                    controller: organizerGrpController,
-                    hint: 'Organizer Group',
-                    borderColor: themeColor,
-                  ),
-                  SizedBox(height: 10),
-
-                  EventCoord(
-                    lattitude: lattitudeController,
-                    longitude: longitudeController,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      final state = context.read<ActionBloc>().state;
-                      if (state is CategoriesLoaded &&
-                          state.selectedCategory != null) {
-                        category = state.selectedCategory;
-                        log('Selected Category: $category');
-                      }
-                      if (state is TicketsUpdated) {
-                        final Map<String, int> ticketMap = {};
-
-                        for (var ticket in state.tickets) {
-                          final type = ticket['type']?.trim();
-                          final countStr = ticket['count']?.trim();
-
-                          if (type != null &&
-                              countStr != null &&
-                              type.isNotEmpty &&
-                              int.tryParse(countStr) != null) {
-                            ticketMap[type] = int.parse(countStr);
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder:
+                                    (context) => CreateNextPage(
+                                      name: nameController.text,
+                                      imagePath: imagePath!,
+                                      description: descriptionController.text,
+                                      venue: venueController.text,
+                                      country: country!,
+                                    ),
+                              ),
+                            );
                           }
                         }
-
-                        log('Tickets Map: $ticketMap');
-                        log(category.toString());
-                      } else {
-                        log('No ticket data available.');
-                      }
-                    },
-                    child: const Text('Log Tickets'),
-                  ),
-                  CategoryField(),
-                  SizedBox(height: 20),
-                  LastDatePicker(lastDateController: lastDateController),
-                  SizedBox(height: 20),
-
-                  CreateEventFooter(nextonPressed: () {}, prevonPressed: () {}),
-                ],
+                      },
+                      prevonPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         );
       },
     );
+  }
+
+  String? validator(value) {
+    if (value == null || value.isEmpty) {
+      return 'Fill the TextField';
+    }
+    return null;
   }
 }

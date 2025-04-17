@@ -4,8 +4,9 @@ import 'package:travelgo_organizer/core/constants/colors.dart';
 
 class LastDatePicker extends StatelessWidget {
   final TextEditingController lastDateController;
+  final String? Function(String?)? validator;
 
-  const LastDatePicker({super.key, required this.lastDateController});
+  const LastDatePicker({super.key, required this.lastDateController, this.validator});
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +20,7 @@ class LastDatePicker extends StatelessWidget {
             fontWeight: FontWeight.w500,
             color: Colors.black,
           ),
+          
         ),
         GestureDetector(
           onTap: () async {
@@ -37,6 +39,7 @@ class LastDatePicker extends StatelessWidget {
           },
           child: AbsorbPointer(
             child: TextFormField(
+              validator: validator,
               controller: lastDateController,
               decoration: InputDecoration(
                 labelText: 'Last Date of Event',

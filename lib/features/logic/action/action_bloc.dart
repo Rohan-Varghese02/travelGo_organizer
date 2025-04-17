@@ -22,6 +22,7 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
     on<CategorySelected>(categorySelected);
     on<LoadCountries>(loadCountries);
     on<CountrySelected>(countrySelected);
+    on<CoverImageNotFound>(coverImageNotFound);
   }
 
   // Create Event --- Events
@@ -30,6 +31,7 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
     PickCoverImageEvent event,
     Emitter<ActionState> emit,
   ) async {
+    log('Image to be picked');
     try {
       final XFile? pickedFile = await _picker.pickImage(
         source: ImageSource.gallery,
@@ -104,67 +106,53 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
     LoadCategories event,
     Emitter<ActionState> emit,
   ) async {
-    try {
-      final snapshot =
-          await FirebaseFirestore.instance
-              .collection('categories')
-              .where('type', isEqualTo: 'event')
-              .get();
+    final snapshot =
+        await FirebaseFirestore.instance
+            .collection('categories')
+            .where('type', isEqualTo: 'event')
+            .get();
 
-      final categoryList =
-          snapshot.docs.map((doc) => doc['name'].toString()).toList();
-      emit(CategoriesLoaded(categoryList));
-    } catch (e) {
-      emit(ActionInitial()); // Or emit an error state
-    }
+    final categoryList =
+        snapshot.docs.map((doc) => doc['name'].toString()).toList();
+    emit(CategoriesLoaded(categoryList));
   }
 
   FutureOr<void> categorySelected(
     CategorySelected event,
     Emitter<ActionState> emit,
   ) {
-    if (state is CategoriesLoaded) {
-      final current = (state as CategoriesLoaded);
-      emit(
-        CategoriesLoaded(
-          current.categories,
-          selectedCategory: event.selectedCategory,
-        ),
-      );
-    }
+    log('Selected category');
+    log(event.selectedCategory);
+    emit(CategoryChoosed(selectedCategory: event.selectedCategory));
+  
   }
 
   FutureOr<void> loadCountries(
     LoadCountries event,
     Emitter<ActionState> emit,
   ) async {
-    try {
-      final snapshot =
-          await FirebaseFirestore.instance
-              .collection('categories')
-              .where('type', isEqualTo: 'country')
-              .get();
+    final snapshot =
+        await FirebaseFirestore.instance
+            .collection('categories')
+            .where('type', isEqualTo: 'country')
+            .get();
 
-      final countryList =
-          snapshot.docs.map((doc) => doc['name'].toString()).toList();
-      emit(CountryLoaded(countryList));
-    } catch (e) {
-      emit(ActionInitial()); // Or emit an error state
-    }
+    final countryList =
+        snapshot.docs.map((doc) => doc['name'].toString()).toList();
+    emit(CountryLoaded(countryList));
   }
 
   FutureOr<void> countrySelected(
     CountrySelected event,
     Emitter<ActionState> emit,
   ) {
-    if (state is CountryLoaded) {
-      final current = (state as CountryLoaded);
-      emit(
-        CountryLoaded(
-          current.countries,
-          selectedCountry: event.selectedCountry,
-        ),
-      );
-    }
+    emit(CountryChoosed(selectedCountry: event.selectedCountry));
+  }
+
+  FutureOr<void> coverImageNotFound(
+    CoverImageNotFound event,
+    Emitter<ActionState> emit,
+  ) {
+    emit(NoCoverImage());
   }
 }

@@ -5,8 +5,8 @@ import 'package:travelgo_organizer/core/constants/colors.dart';
 import 'package:travelgo_organizer/features/logic/action/action_bloc.dart';
 
 class CategoryField extends StatelessWidget {
-  const CategoryField({super.key});
-
+  const CategoryField({super.key, this.validator});
+  final String? Function(String?)? validator;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -25,6 +25,7 @@ class CategoryField extends StatelessWidget {
           builder: (context, state) {
             if (state is CategoriesLoaded) {
               return DropdownButtonFormField<String>(
+                validator: validator,
                 value: state.selectedCategory,
                 onChanged: (value) {
                   if (value != null) {
@@ -39,7 +40,7 @@ class CategoryField extends StatelessWidget {
                         )
                         .toList(),
                 decoration: InputDecoration(
-                  labelText: 'Select Category',
+                  hintText: 'Select Category',
                   border: OutlineInputBorder(
                     borderSide: BorderSide(color: themeColor),
                     borderRadius: BorderRadius.circular(8),
