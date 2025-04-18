@@ -95,3 +95,12 @@ class FailedUploadedPhoto extends ActionState {}
 
 class UploadPostSuccess extends ActionState{}
 class UploadPostFailed extends ActionState{}
+
+/// Edit Page --- Events
+
+class NavigateToEditPage extends ActionState{
+    final PostDataModel post;
+
+  NavigateToEditPage({required this.post});
+
+}

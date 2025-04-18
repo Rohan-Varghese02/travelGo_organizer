@@ -21,6 +21,7 @@ class UpdateTicketType extends ActionEvent {
   final String value;
   UpdateTicketType(this.index, this.value);
 }
+
 class UpdateTicketPrice extends ActionEvent {
   final int index;
   final String value;
@@ -65,13 +66,38 @@ class UploadCoverPhoto extends ActionEvent {
   final double longitude;
   final String category;
 
-  UploadCoverPhoto({required this.uid, required this.name, required this.description, required this.venue, required this.imagePath, required this.country, required this.tickets, required this.benefits, required this.group, required this.registrationDeadline, required this.latitude, required this.longitude, required this.category});
+  UploadCoverPhoto({
+    required this.uid,
+    required this.name,
+    required this.description,
+    required this.venue,
+    required this.imagePath,
+    required this.country,
+    required this.tickets,
+    required this.benefits,
+    required this.group,
+    required this.registrationDeadline,
+    required this.latitude,
+    required this.longitude,
+    required this.category,
+  });
 }
 
-class UploadPostEvent extends ActionEvent{
-    final PostDataModel post;
+class UploadPostEvent extends ActionEvent {
+  final PostDataModel post;
 
   UploadPostEvent({required this.post});
+}
 
+/// Edit Page --- Events
 
+class EditButtonPressed extends ActionEvent {
+  final PostDataModel post;
+
+  EditButtonPressed({required this.post});
+}
+
+class UpdateTicketList extends ActionEvent {
+  final List<Map<String, String>> tickets;
+  UpdateTicketList(this.tickets);
 }

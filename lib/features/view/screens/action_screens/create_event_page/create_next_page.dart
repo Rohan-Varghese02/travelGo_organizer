@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
-import 'package:travelgo_organizer/core/services/api_services.dart';
 import 'package:travelgo_organizer/core/services/auth/authservice.dart';
 import 'package:travelgo_organizer/data/models/post_data.dart';
 import 'package:travelgo_organizer/features/logic/action/action_bloc.dart';
@@ -18,7 +17,7 @@ import 'package:travelgo_organizer/features/view/widgets/heading_text_field.dart
 
 class CreateNextPage extends StatefulWidget {
   final String name;
-  final String imagePath;
+  final String? imagePath;
   final String description;
   final String venue;
   final String country;
@@ -26,7 +25,7 @@ class CreateNextPage extends StatefulWidget {
   const CreateNextPage({
     super.key,
     required this.name,
-    required this.imagePath,
+    this.imagePath,
     required this.description,
     required this.venue,
     required this.country,
@@ -44,7 +43,7 @@ class _CreateNextPageState extends State<CreateNextPage> {
     uid = Authservice().getUserUid();
     context.read<ActionBloc>().add(LoadCategories());
     log(widget.name);
-    log(widget.imagePath);
+    log(widget.imagePath!);
     log(widget.description);
     log(widget.venue);
     log(widget.country);
@@ -194,38 +193,6 @@ class _CreateNextPageState extends State<CreateNextPage> {
                     lattitude: lattitudeController,
                     longitude: longitudeController,
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      final state = context.read<ActionBloc>().state;
-                      if (state is CategoriesLoaded &&
-                          state.selectedCategory != null) {
-                        category = state.selectedCategory;
-                        log('Selected Category: $category');
-                      } else {
-                        log(category.toString());
-                      }
-                      if (state is TicketsUpdated) {
-                        final Map<String, int> ticketMap = {};
-
-                        for (var ticket in state.tickets) {
-                          final type = ticket['type']?.trim();
-                          final countStr = ticket['count']?.trim();
-
-                          if (type != null &&
-                              countStr != null &&
-                              type.isNotEmpty &&
-                              int.tryParse(countStr) != null) {
-                            ticketMap[type] = int.parse(countStr);
-                          }
-                        }
-
-                        log('Tickets Map: $ticketMap');
-                      } else {
-                        log('No ticket data available.');
-                      }
-                    },
-                    child: const Text('Log Tickets'),
-                  ),
                   CategoryField(
                     validator: (p0) {
                       return validator(p0);
@@ -245,21 +212,13 @@ class _CreateNextPageState extends State<CreateNextPage> {
                       if (keyState.currentState!.validate()) {
                         double? lat = double.tryParse(lattitudeController.text);
                         double? lon = double.tryParse(longitudeController.text);
-                        log(uid);
-                        log(ticketMap.toString());
-                        log(benefitsController.text);
-                        log(organizerGrpController.text);
-                        log(lastDateController.text);
-                        print(lat);
-                        print(lon);
-                        log(category.toString());
                         context.read<ActionBloc>().add(
                           UploadCoverPhoto(
                             uid: uid,
                             name: widget.name,
                             description: widget.description,
                             venue: widget.venue,
-                            imagePath: widget.imagePath,
+                            imagePath: widget.imagePath!,
                             country: widget.country,
                             tickets: ticketMap,
                             benefits: benefitsController.text,
@@ -274,7 +233,8 @@ class _CreateNextPageState extends State<CreateNextPage> {
                     },
                     prevonPressed: () {
                       Navigator.of(context).pop();
-                    }, text: 'Host',
+                    },
+                    text: 'Host',
                   ),
                 ],
               ),

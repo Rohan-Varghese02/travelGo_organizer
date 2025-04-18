@@ -29,6 +29,11 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
     on<CoverImageNotFound>(coverImageNotFound);
     on<UploadCoverPhoto>(uploadCoverPhoto);
     on<UploadPostEvent>(uploadPostToFirestore);
+
+    // Edit Event --- Events
+    on<EditButtonPressed>(editButtonPressed);
+    on<UpdateTicketList>(updateTicketList);
+
   }
 
   // Create Event --- Events
@@ -225,5 +230,16 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
       log("Error uploading post: $e");
       emit(UploadPostFailed());
     }
+  }
+
+  FutureOr<void> editButtonPressed(
+    EditButtonPressed event,
+    Emitter<ActionState> emit,
+  ) {
+    emit(NavigateToEditPage(post: event.post));
+  }
+
+  FutureOr<void> updateTicketList(UpdateTicketList event, Emitter<ActionState> emit) {
+    emit(TicketsUpdated(tickets: event.tickets));
   }
 }
