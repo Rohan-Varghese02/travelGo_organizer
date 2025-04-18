@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
+import 'package:travelgo_organizer/core/services/api_services.dart';
+import 'package:travelgo_organizer/core/services/auth/authservice.dart';
+import 'package:travelgo_organizer/data/models/post_data.dart';
 import 'package:travelgo_organizer/features/logic/action/action_bloc.dart';
 import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/widgets/category_field.dart';
 import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/widgets/create_event_footer.dart';
@@ -34,9 +37,11 @@ class CreateNextPage extends StatefulWidget {
 }
 
 class _CreateNextPageState extends State<CreateNextPage> {
+  String uid = '';
   @override
   void initState() {
     super.initState();
+    uid = Authservice().getUserUid();
     context.read<ActionBloc>().add(LoadCategories());
     log(widget.name);
     log(widget.imagePath);
@@ -51,15 +56,50 @@ class _CreateNextPageState extends State<CreateNextPage> {
   TextEditingController longitudeController = TextEditingController();
   final TextEditingController lastDateController = TextEditingController();
   final keyState = GlobalKey<FormState>();
-  final Map<String, int> ticketMap = {};
+  final Map<String, Map<String, int>> ticketMap = {};
   String? category;
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<ActionBloc, ActionState>(
       listener: (context, state) {
+        log(state.runtimeType.toString());
         if (state is CategoryChoosed) {
           category = state.selectedCategory;
+        }
+        if (state is SuccessfullyUploadedPhoto) {
+          log(state.imagePublicId);
+          log(state.imageUrl);
+          final post = PostDataModel(
+            timestamp: DateTime.now(),
+            uid: uid,
+            name: state.name,
+            description: state.description,
+            venue: state.venue,
+            country: state.country,
+            imageUrl: state.imageUrl,
+            imagePublicId: state.imagePublicId,
+            tickets: state.tickets,
+            benefits: state.benefits,
+            group: state.group,
+            registrationDeadline: state.registrationDeadline,
+            latitude: state.latitude,
+            longitude: state.longitude,
+            category: state.category,
+          );
+          context.read<ActionBloc>().add(UploadPostEvent(post: post));
+        }
+        if (state is UploadPostSuccess) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Created Post Successfuly'),
+                backgroundColor: success,
+              ),
+            );
+          });
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
         }
       },
       child: Scaffold(
@@ -88,16 +128,22 @@ class _CreateNextPageState extends State<CreateNextPage> {
                     buildWhen: (previous, current) => current is TicketsUpdated,
                     builder: (context, state) {
                       if (state is TicketsUpdated) {
-                        ticketMap.clear(); // Optional: clear before updating
+                        ticketMap.clear();
                         for (var ticket in state.tickets) {
                           final type = ticket['type']?.trim();
+                          final priceStr = ticket['price']?.trim();
                           final countStr = ticket['count']?.trim();
 
                           if (type != null &&
+                              priceStr != null &&
                               countStr != null &&
                               type.isNotEmpty &&
-                              int.tryParse(countStr) != null) {
-                            ticketMap[type] = int.parse(countStr);
+                              int.tryParse(countStr) != null &&
+                              int.tryParse(priceStr) != null) {
+                            ticketMap[type] = {
+                              'price': int.parse(priceStr),
+                              'count': int.parse(countStr),
+                            };
                           }
                         }
 
@@ -197,18 +243,38 @@ class _CreateNextPageState extends State<CreateNextPage> {
                   CreateEventFooter(
                     nextonPressed: () {
                       if (keyState.currentState!.validate()) {
+                        double? lat = double.tryParse(lattitudeController.text);
+                        double? lon = double.tryParse(longitudeController.text);
+                        log(uid);
                         log(ticketMap.toString());
                         log(benefitsController.text);
                         log(organizerGrpController.text);
                         log(lastDateController.text);
-                        log(lattitudeController.text);
-                        log(longitudeController.text);
+                        print(lat);
+                        print(lon);
                         log(category.toString());
+                        context.read<ActionBloc>().add(
+                          UploadCoverPhoto(
+                            uid: uid,
+                            name: widget.name,
+                            description: widget.description,
+                            venue: widget.venue,
+                            imagePath: widget.imagePath,
+                            country: widget.country,
+                            tickets: ticketMap,
+                            benefits: benefitsController.text,
+                            group: organizerGrpController.text,
+                            registrationDeadline: lastDateController.text,
+                            latitude: lat!,
+                            longitude: lon!,
+                            category: category!,
+                          ),
+                        );
                       }
                     },
                     prevonPressed: () {
                       Navigator.of(context).pop();
-                    },
+                    }, text: 'Host',
                   ),
                 ],
               ),

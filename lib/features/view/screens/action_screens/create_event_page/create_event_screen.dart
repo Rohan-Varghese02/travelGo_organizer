@@ -160,6 +160,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       prevonPressed: () {
                         Navigator.of(context).pop();
                       },
+                      text: 'Next',
                     ),
                   ],
                 ),

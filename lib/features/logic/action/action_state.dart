@@ -56,3 +56,42 @@ class CountryChoosed extends ActionState {
 }
 
 class NoCoverImage extends ActionState {}
+
+class SuccessfullyUploadedPhoto extends ActionState {
+  final String uid; 
+  final String name;
+  final String description;
+  final String venue;
+  final String country;
+  final String imageUrl;
+  final String imagePublicId;
+  final Map<String, Map<String, int>> tickets;
+  final String benefits;
+  final String group;
+  final String registrationDeadline;
+  final double latitude;
+  final double longitude;
+  final String category;
+
+  SuccessfullyUploadedPhoto({
+    required this.uid,
+    required this.name,
+    required this.description,
+    required this.venue,
+    required this.country,
+    required this.imageUrl,
+    required this.imagePublicId,
+    required this.tickets,
+    required this.benefits,
+    required this.group,
+    required this.registrationDeadline,
+    required this.latitude,
+    required this.longitude,
+    required this.category,
+  });
+}
+
+class FailedUploadedPhoto extends ActionState {}
+
+class UploadPostSuccess extends ActionState{}
+class UploadPostFailed extends ActionState{}

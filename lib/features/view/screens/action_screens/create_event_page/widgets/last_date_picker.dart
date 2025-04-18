@@ -6,7 +6,11 @@ class LastDatePicker extends StatelessWidget {
   final TextEditingController lastDateController;
   final String? Function(String?)? validator;
 
-  const LastDatePicker({super.key, required this.lastDateController, this.validator});
+  const LastDatePicker({
+    super.key,
+    required this.lastDateController,
+    this.validator,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +18,12 @@ class LastDatePicker extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Last Date of Registeration',
+          ' Date of Event',
           style: GoogleFonts.poppins(
             fontSize: 16,
             fontWeight: FontWeight.w500,
             color: Colors.black,
           ),
-          
         ),
         GestureDetector(
           onTap: () async {
@@ -42,7 +45,7 @@ class LastDatePicker extends StatelessWidget {
               validator: validator,
               controller: lastDateController,
               decoration: InputDecoration(
-                labelText: 'Last Date of Event',
+                hintText: 'Event Date',
                 border: OutlineInputBorder(
                   borderSide: BorderSide(color: themeColor),
                   borderRadius: BorderRadius.circular(8),

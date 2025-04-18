@@ -5,6 +5,8 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
+import 'package:travelgo_organizer/core/services/api_services.dart';
+import 'package:travelgo_organizer/data/models/post_data.dart';
 
 part 'action_event.dart';
 part 'action_state.dart';
@@ -18,11 +20,15 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
     on<RemoveTicket>(removeTicket);
     on<UpdateTicketType>(updateTicketType);
     on<UpdateTicketCount>(updateTicketCount);
+    on<UpdateTicketPrice>(updateTicketPrice);
+
     on<LoadCategories>(loadCategories);
     on<CategorySelected>(categorySelected);
     on<LoadCountries>(loadCountries);
     on<CountrySelected>(countrySelected);
     on<CoverImageNotFound>(coverImageNotFound);
+    on<UploadCoverPhoto>(uploadCoverPhoto);
+    on<UploadPostEvent>(uploadPostToFirestore);
   }
 
   // Create Event --- Events
@@ -102,6 +108,20 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
     }
   }
 
+  FutureOr<void> updateTicketPrice(
+    UpdateTicketPrice event,
+    Emitter<ActionState> emit,
+  ) {
+    final state = this.state;
+
+    if (state is TicketsUpdated) {
+      final updatedTickets = List<Map<String, String>>.from(state.tickets);
+      updatedTickets[event.index]["price"] =
+          event.value; // Updating ticket price
+      emit(TicketsUpdated(tickets: updatedTickets));
+    }
+  }
+
   FutureOr<void> loadCategories(
     LoadCategories event,
     Emitter<ActionState> emit,
@@ -124,7 +144,6 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
     log('Selected category');
     log(event.selectedCategory);
     emit(CategoryChoosed(selectedCategory: event.selectedCategory));
-  
   }
 
   FutureOr<void> loadCountries(
@@ -154,5 +173,57 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
     Emitter<ActionState> emit,
   ) {
     emit(NoCoverImage());
+  }
+
+  FutureOr<void> uploadCoverPhoto(
+    UploadCoverPhoto event,
+    Emitter<ActionState> emit,
+  ) async {
+    final apiservices = ApiServices();
+    Map<String, String> urls = await apiservices.getUploadUrl(event.imagePath);
+    String? imageUrl = urls['imageUrl'];
+    String? imagePublicID = urls['publicId'];
+    emit(
+      SuccessfullyUploadedPhoto(
+        uid: event.uid,
+        name: event.name,
+        description: event.description,
+        venue: event.venue,
+        country: event.country,
+        imageUrl: imageUrl!,
+        imagePublicId: imagePublicID!,
+        tickets: event.tickets,
+        benefits: event.benefits,
+        group: event.group,
+        registrationDeadline: event.registrationDeadline,
+        latitude: event.latitude,
+        longitude: event.longitude,
+        category: event.category,
+      ),
+    );
+  }
+
+  FutureOr<void> uploadPostToFirestore(
+    UploadPostEvent event,
+    Emitter<ActionState> emit,
+  ) async {
+    try {
+      final post = event.post;
+
+      final postRef =
+          FirebaseFirestore.instance
+              .collection('posts')
+              .doc(post.uid)
+              .collection('posts')
+              .doc();
+
+      await postRef.set(post.toMap());
+
+      log("Post uploaded: ${postRef.id}");
+      emit(UploadPostSuccess());
+    } catch (e) {
+      log("Error uploading post: $e");
+      emit(UploadPostFailed());
+    }
   }
 }

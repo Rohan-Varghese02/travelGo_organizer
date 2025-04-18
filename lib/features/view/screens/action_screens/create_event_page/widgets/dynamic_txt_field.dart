@@ -8,7 +8,13 @@ class DynamicTxtField extends StatelessWidget {
   final int index;
   final Map<String, String>? ticket;
   final String? Function(String?)? validator;
-  const DynamicTxtField({super.key, required this.index, required this.ticket, this.validator});
+
+  const DynamicTxtField({
+    super.key,
+    required this.index,
+    required this.ticket,
+    this.validator,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +30,7 @@ class DynamicTxtField extends StatelessWidget {
               context.read<ActionBloc>().add(UpdateTicketType(index, val));
             },
             decoration: InputDecoration(
-              hintText: 'Ticket Type',
+              hintText: 'Type',
               hintStyle: GoogleFonts.poppins(),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(40),
@@ -36,11 +42,32 @@ class DynamicTxtField extends StatelessWidget {
             ),
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8),
-          child: Text(':'),
+        const SizedBox(width: 8),
+        // Price Field
+        Expanded(
+          flex: 1,
+          child: TextFormField(
+            validator: validator,
+            initialValue: ticket!["price"],
+            onChanged: (val) {
+              context.read<ActionBloc>().add(UpdateTicketPrice(index, val));
+            },
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              hintText: 'Price',
+              hintStyle: GoogleFonts.poppins(),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(40),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(40),
+                borderSide: BorderSide(color: themeColor),
+              ),
+            ),
+          ),
         ),
-        // Ticket Count Field
+        const SizedBox(width: 8),
+        // Count Field
         Expanded(
           flex: 1,
           child: TextFormField(
@@ -63,14 +90,13 @@ class DynamicTxtField extends StatelessWidget {
             ),
           ),
         ),
-        // Delete Button (Only if more than 1 ticket exists)
-        if (ticket != null)
-          IconButton(
-            icon: Icon(Icons.delete, color: themeColor),
-            onPressed: () {
-              context.read<ActionBloc>().add(RemoveTicket(index));
-            },
-          ),
+        // Delete Button
+        IconButton(
+          icon: Icon(Icons.delete, color: themeColor),
+          onPressed: () {
+            context.read<ActionBloc>().add(RemoveTicket(index));
+          },
+        ),
       ],
     );
   }
