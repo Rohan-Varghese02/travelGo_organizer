@@ -32,7 +32,7 @@ class StreamServices {
         .snapshots()
         .map((snapshot) {
           return snapshot.docs.map((doc) {
-            return PostDataModel.fromMap(doc.data());
+            return PostDataModel.fromMap(doc.data(), doc.id);
           }).toList();
         });
   }

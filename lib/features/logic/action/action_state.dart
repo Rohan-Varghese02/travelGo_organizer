@@ -58,7 +58,7 @@ class CountryChoosed extends ActionState {
 class NoCoverImage extends ActionState {}
 
 class SuccessfullyUploadedPhoto extends ActionState {
-  final String uid; 
+  final String uid;
   final String name;
   final String description;
   final String venue;
@@ -93,14 +93,40 @@ class SuccessfullyUploadedPhoto extends ActionState {
 
 class FailedUploadedPhoto extends ActionState {}
 
-class UploadPostSuccess extends ActionState{}
-class UploadPostFailed extends ActionState{}
+class UploadPostSuccess extends ActionState {}
+
+class UploadPostFailed extends ActionState {}
 
 /// Edit Page --- Events
 
-class NavigateToEditPage extends ActionState{
-    final PostDataModel post;
+class NavigateToEditPage extends ActionState {
+  final PostDataModel post;
 
   NavigateToEditPage({required this.post});
+}
+
+class EditTicketsUpdated extends ActionState {
+  final List<Map<String, String>> tickets;
+
+  EditTicketsUpdated(this.tickets);
+}
+
+class UpdatePostIntiateState extends ActionState {
+  final PostDataModel post;
+
+  UpdatePostIntiateState({required this.post});
+}
+class UpdatePostFailed extends ActionState{
 
 }
+
+class UpdatePostSuccess extends ActionState{}
+class UpdatePostFail extends ActionState{}
+
+class DeletePostAlertBox extends ActionState{
+  final PostDataModel post;
+
+  DeletePostAlertBox({required this.post});
+}
+class DeletePostSuccess extends ActionState{}
+class DeletePostFail extends ActionState{}

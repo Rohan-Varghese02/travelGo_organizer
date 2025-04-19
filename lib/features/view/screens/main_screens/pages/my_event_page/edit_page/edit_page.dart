@@ -25,6 +25,7 @@ class _EditPageState extends State<EditPage> {
   void initState() {
     super.initState();
     context.read<ActionBloc>().add(LoadCountries());
+    log(widget.post.postId);
   }
 
   String? country;
@@ -50,6 +51,7 @@ class _EditPageState extends State<EditPage> {
         if (state is CountryChoosed) {
           country = state.selectedCountry;
         }
+        
       },
       buildWhen:
           (previous, current) =>

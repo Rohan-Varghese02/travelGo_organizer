@@ -34,6 +34,45 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
     on<EditButtonPressed>(editButtonPressed);
     on<UpdateTicketList>(updateTicketList);
 
+    /// check working ??
+    List<Map<String, String>> editTickets = [];
+
+    on<LoadEditTickets>((event, emit) {
+      editTickets = List.from(event.tickets);
+      emit(EditTicketsUpdated(editTickets));
+    });
+
+    on<AddEditTicket>((event, emit) {
+      editTickets.add({"type": "", "price": "", "count": ""});
+      emit(EditTicketsUpdated(List.from(editTickets)));
+    });
+
+    on<UpdateEditTicketType>((event, emit) {
+      editTickets[event.index]["type"] = event.value;
+      emit(EditTicketsUpdated(List.from(editTickets)));
+    });
+
+    on<UpdateEditTicketPrice>((event, emit) {
+      editTickets[event.index]["price"] = event.value;
+      emit(EditTicketsUpdated(List.from(editTickets)));
+    });
+
+    on<UpdateEditTicketCount>((event, emit) {
+      editTickets[event.index]["count"] = event.value;
+      emit(EditTicketsUpdated(List.from(editTickets)));
+    });
+
+    on<RemoveEditTicket>((event, emit) {
+      editTickets.removeAt(event.index);
+      emit(EditTicketsUpdated(List.from(editTickets)));
+    });
+
+    on<UpdateCoverPhotoEvent>(updateCoverPhotoEvent);
+    on<UpdatePostIntiated>(updatePostIntiated);
+
+    //Delete Event --- MyEvents
+    on<DeletePostEvent>(deletePostEvent);
+    on<DeletePostIntiated>(deletePostIntiated);
   }
 
   // Create Event --- Events
@@ -62,14 +101,14 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
     final state = this.state;
 
     if (state is TicketsUpdated) {
-      final updatedTickets = List<Map<String, String>>.from(state.tickets)
-        ..add({"type": "", "count": ""}); // Adding a new empty ticket
+      final updatedTickets = List<Map<String, String>>.from(state.tickets);
+      updatedTickets.add({"type": "", "price": "", "count": ""});
       emit(TicketsUpdated(tickets: updatedTickets));
     } else {
       emit(
         TicketsUpdated(
           tickets: [
-            {"type": "", "count": ""},
+            {"type": "", "price": "", "count": ""},
           ],
         ),
       );
@@ -221,7 +260,7 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
               .doc(post.uid)
               .collection('posts')
               .doc();
-
+      post.postId = postRef.id;
       await postRef.set(post.toMap());
 
       log("Post uploaded: ${postRef.id}");
@@ -239,7 +278,112 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
     emit(NavigateToEditPage(post: event.post));
   }
 
-  FutureOr<void> updateTicketList(UpdateTicketList event, Emitter<ActionState> emit) {
+  FutureOr<void> updateTicketList(
+    UpdateTicketList event,
+    Emitter<ActionState> emit,
+  ) {
     emit(TicketsUpdated(tickets: event.tickets));
+  }
+
+  FutureOr<void> updateCoverPhotoEvent(
+    UpdateCoverPhotoEvent event,
+    Emitter<ActionState> emit,
+  ) async {
+    final api = ApiServices();
+    String imagePublicId = event.imagePublicId;
+    String imageUrl = event.imageUrl;
+
+    try {
+      log(event.imagePath);
+      if (event.imagePath != 'default') {
+        if (event.imagePublicId.isNotEmpty) {
+          final deleted = await api.deleteImageFromCloudinary(
+            event.imagePublicId,
+          );
+          if (!deleted) {
+            log("Failed to delete old image.");
+          }
+        }
+        Map<String, String> url = await api.getUploadUrl(event.imagePath);
+        imageUrl = url['imageUrl']!;
+        imagePublicId = url['publicId']!;
+      }
+      PostDataModel post = PostDataModel(
+        timestamp: event.post.timestamp,
+        uid: event.uid,
+        name: event.name,
+        description: event.description,
+        venue: event.venue,
+        country: event.country,
+        imageUrl: imageUrl,
+        imagePublicId: imagePublicId,
+        tickets: event.tickets,
+        benefits: event.benefits,
+        group: event.group,
+        registrationDeadline: event.registrationDeadline,
+        latitude: event.latitude,
+        longitude: event.longitude,
+        category: event.category,
+        postId: event.post.postId,
+      );
+      emit(UpdatePostIntiateState(post: post));
+    } catch (e) {
+      emit(UpdatePostFailed());
+    }
+  }
+
+  FutureOr<void> updatePostIntiated(
+    UpdatePostIntiated event,
+    Emitter<ActionState> emit,
+  ) async {
+    try {
+      final post = event.post;
+
+      final postRef = FirebaseFirestore.instance
+          .collection('posts')
+          .doc(post.uid)
+          .collection('posts')
+          .doc(post.postId);
+
+      await postRef.update(post.toMap());
+
+      log("Post updted: ${postRef.id}");
+      emit(UpdatePostSuccess());
+    } catch (e) {
+      log("Error uploading post: $e");
+      emit(UpdatePostFail());
+    }
+  }
+
+  FutureOr<void> deletePostEvent(
+    DeletePostEvent event,
+    Emitter<ActionState> emit,
+  ) {
+    emit(DeletePostAlertBox(post: event.post));
+  }
+
+  FutureOr<void> deletePostIntiated(
+    DeletePostIntiated event,
+    Emitter<ActionState> emit,
+  ) async {
+    final post = event.post;
+    final api = ApiServices();
+    final deleted = await api.deleteImageFromCloudinary(post.imagePublicId);
+    if (!deleted) {
+      log("Failed to delete old image.");
+    }
+    try {
+      await FirebaseFirestore.instance
+          .collection('posts')
+          .doc(post.uid)
+          .collection('posts')
+          .doc(post.postId)
+          .delete();
+      log("Post deleted successfully");
+      emit(DeletePostSuccess());
+    } catch (e) {
+      log("Error deleting post: $e");
+      emit(DeletePostFail());
+    }
   }
 }

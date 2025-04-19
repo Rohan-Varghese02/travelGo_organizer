@@ -84,7 +84,7 @@ class _CreateNextPageState extends State<CreateNextPage> {
             registrationDeadline: state.registrationDeadline,
             latitude: state.latitude,
             longitude: state.longitude,
-            category: state.category,
+            category: state.category, postId: '',
           );
           context.read<ActionBloc>().add(UploadPostEvent(post: post));
         }

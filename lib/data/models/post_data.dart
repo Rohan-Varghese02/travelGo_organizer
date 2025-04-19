@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PostDataModel {
+  String postId; // <-- Add this
+
   final String uid; // Organizer UID
   final String name;
   final String description;
@@ -19,6 +21,7 @@ class PostDataModel {
   final bool isFeatured; // <-- Add this
 
   PostDataModel({
+    required this.postId,
     required this.timestamp,
     required this.uid,
     required this.name,
@@ -55,11 +58,13 @@ class PostDataModel {
       'category': category,
       'timestamp': FieldValue.serverTimestamp(), // optional
       'isFeatured': isFeatured, // <-- Include when saving
+      'postId': postId,
     };
   }
 
-  factory PostDataModel.fromMap(Map<String, dynamic> map) {
+  factory PostDataModel.fromMap(Map<String, dynamic> map, String documentId) {
     return PostDataModel(
+      postId: documentId, // <-- assign doc ID manually
       uid: map['uid'] ?? '',
       name: map['name'] ?? '',
       description: map['description'] ?? '',

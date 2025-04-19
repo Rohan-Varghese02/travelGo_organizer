@@ -4,15 +4,18 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
 import 'package:travelgo_organizer/features/logic/action/action_bloc.dart';
 
-class DynamicTxtField extends StatelessWidget {
+class DynamicTxtFieldEdit extends StatelessWidget {
+  final bool isEdit;
+
   final int index;
   final Map<String, String>? ticket;
   final String? Function(String?)? validator;
-  const DynamicTxtField({
+  const DynamicTxtFieldEdit({
     super.key,
     required this.index,
-    required this.ticket,
+    this.ticket,
     this.validator,
+    required this.isEdit,
   });
 
   @override
@@ -26,7 +29,13 @@ class DynamicTxtField extends StatelessWidget {
             validator: validator,
             initialValue: ticket!["type"],
             onChanged: (val) {
-              context.read<ActionBloc>().add(UpdateTicketType(index, val));
+              if (isEdit) {
+                context.read<ActionBloc>().add(
+                  UpdateEditTicketType(index, val),
+                );
+              } else {
+                context.read<ActionBloc>().add(UpdateTicketType(index, val));
+              }
             },
             decoration: InputDecoration(
               hintText: 'Type',
@@ -49,7 +58,15 @@ class DynamicTxtField extends StatelessWidget {
             validator: validator,
             initialValue: ticket!["price"],
             onChanged: (val) {
-              context.read<ActionBloc>().add(UpdateTicketPrice(index, val));
+              if (isEdit) {
+                context.read<ActionBloc>().add(
+                  UpdateEditTicketPrice(index, val),
+                );
+              } else {
+                context.read<ActionBloc>().add(
+                  UpdateEditTicketPrice(index, val),
+                );
+              }
             },
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
@@ -73,7 +90,15 @@ class DynamicTxtField extends StatelessWidget {
             validator: validator,
             initialValue: ticket!["count"],
             onChanged: (val) {
-              context.read<ActionBloc>().add(UpdateTicketCount(index, val));
+              if (isEdit) {
+                context.read<ActionBloc>().add(
+                  UpdateEditTicketCount(index, val),
+                );
+              } else {
+                context.read<ActionBloc>().add(
+                  UpdateEditTicketCount(index, val),
+                );
+              }
             },
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
@@ -93,7 +118,7 @@ class DynamicTxtField extends StatelessWidget {
         IconButton(
           icon: Icon(Icons.delete, color: themeColor),
           onPressed: () {
-            context.read<ActionBloc>().add(RemoveTicket(index));
+            context.read<ActionBloc>().add(RemoveEditTicket(index));
           },
         ),
       ],

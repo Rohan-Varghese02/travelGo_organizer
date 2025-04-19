@@ -10,6 +10,7 @@ import 'package:travelgo_organizer/core/services/stream_services.dart';
 import 'package:travelgo_organizer/data/models/post_data.dart';
 import 'package:travelgo_organizer/features/logic/action/action_bloc.dart';
 import 'package:travelgo_organizer/features/view/screens/main_screens/pages/my_event_page/edit_page/edit_page.dart';
+import 'package:travelgo_organizer/features/view/screens/main_screens/pages/my_event_page/widgets/delete_dailog.dart';
 
 class MyEventPage extends StatefulWidget {
   const MyEventPage({super.key});
@@ -34,6 +35,9 @@ class _MyEventPageState extends State<MyEventPage> {
           Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => EditPage(post: state.post)),
           );
+        }
+        if (state is DeletePostAlertBox) {
+          deleteDailog(context,state.post);
         }
       },
       child: Scaffold(
@@ -90,6 +94,10 @@ class _MyEventPageState extends State<MyEventPage> {
                       if (value == 'edit') {
                         context.read<ActionBloc>().add(
                           EditButtonPressed(post: post),
+                        );
+                      } else if (value == 'delete') {
+                        context.read<ActionBloc>().add(
+                          DeletePostEvent(post: post),
                         );
                       }
                     },

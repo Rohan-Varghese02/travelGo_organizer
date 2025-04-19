@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,10 +6,12 @@ import 'package:travelgo_organizer/core/constants/colors.dart';
 import 'package:travelgo_organizer/core/services/auth/authservice.dart';
 import 'package:travelgo_organizer/data/models/post_data.dart';
 import 'package:travelgo_organizer/features/logic/action/action_bloc.dart';
-import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/widgets/dynamic_txt_field.dart';
 import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/widgets/event_coord.dart';
 import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/widgets/last_date_picker.dart';
-import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/widgets/ticket_header.dart';
+import 'package:travelgo_organizer/features/view/screens/main_screens/pages/my_event_page/edit_page/widgets/dynamic_txt_field_edit.dart';
+import 'package:travelgo_organizer/features/view/screens/main_screens/pages/my_event_page/edit_page/widgets/edit_country_field.dart';
+import 'package:travelgo_organizer/features/view/screens/main_screens/pages/my_event_page/edit_page/widgets/edit_event_footer.dart';
+import 'package:travelgo_organizer/features/view/screens/main_screens/pages/my_event_page/edit_page/widgets/edit_ticket_header.dart';
 import 'package:travelgo_organizer/features/view/widgets/heading_text_field.dart';
 
 class EditNextPage extends StatefulWidget {
@@ -37,14 +38,13 @@ class EditNextPage extends StatefulWidget {
 class _EditNextPageState extends State<EditNextPage> {
   String uid = '';
   final keyState = GlobalKey<FormState>();
-  final Map<String, Map<String, int>> ticketMap = {};
   String? category;
   @override
   void initState() {
     super.initState();
     uid = Authservice().getUserUid();
+    log(widget.imagePath);
     context.read<ActionBloc>().add(LoadCategories());
-
     final tickets =
         widget.post.tickets.entries.map((entry) {
           return {
@@ -54,9 +54,10 @@ class _EditNextPageState extends State<EditNextPage> {
           };
         }).toList();
 
-    context.read<ActionBloc>().add(UpdateTicketList(tickets));
+    context.read<ActionBloc>().add(LoadEditTickets(tickets));
   }
 
+  final logMap = <String, Map<String, int>>{};
   @override
   Widget build(BuildContext context) {
     TextEditingController benefitsController = TextEditingController(
@@ -75,150 +76,219 @@ class _EditNextPageState extends State<EditNextPage> {
       text: widget.post.registrationDeadline,
     );
     log(widget.post.tickets.toString());
-    return Scaffold(
-      appBar: AppBar(
-        // automaticallyImplyLeading: false,
-        title: Text(
-          'Edit Event',
-          style: GoogleFonts.poppins(
-            fontSize: 24,
-            fontWeight: FontWeight.w600,
-            color: themeColor,
+    return BlocListener<ActionBloc, ActionState>(
+      listener: (context, state) {
+        log(state.runtimeType.toString());
+        if (state is CategoryChoosed) {
+          category = state.selectedCategory;
+        }
+        if (state is UpdatePostIntiateState) {
+          context.read<ActionBloc>().add(UpdatePostIntiated(post: state.post));
+        }
+        if (state is UpdatePostSuccess) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Edited Post Successfuly'),
+                backgroundColor: success,
+              ),
+            );
+          });
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          // automaticallyImplyLeading: false,
+          title: Text(
+            'Edit Event',
+            style: GoogleFonts.poppins(
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
+              color: themeColor,
+            ),
           ),
+          centerTitle: true,
         ),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Form(
-            key: keyState,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TicketHeader(),
-                BlocBuilder<ActionBloc, ActionState>(
-                  buildWhen: (previous, current) => current is TicketsUpdated,
-                  builder: (context, state) {
-                    if (state is TicketsUpdated) {
-                      ticketMap.clear();
-                      for (var ticket in state.tickets) {
-                        final type = ticket['type']?.trim();
-                        final priceStr = ticket['price']?.trim();
-                        final countStr = ticket['count']?.trim();
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Form(
+              key: keyState,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  EditTicketHeader(),
+                  BlocBuilder<ActionBloc, ActionState>(
+                    buildWhen: (prev, curr) => curr is EditTicketsUpdated,
+                    builder: (context, state) {
+                      if (state is EditTicketsUpdated) {
+                        logMap.clear(); // <--- Add this line
 
-                        if (type != null &&
-                            priceStr != null &&
-                            countStr != null &&
-                            type.isNotEmpty &&
-                            int.tryParse(countStr) != null &&
-                            int.tryParse(priceStr) != null) {
-                          ticketMap[type] = {
-                            'price': int.parse(priceStr),
-                            'count': int.parse(countStr),
-                          };
+                        for (var ticket in state.tickets) {
+                          final type = ticket['type']?.trim();
+                          final price = ticket['price']?.trim();
+                          final count = ticket['count']?.trim();
+                          if (type != null &&
+                              price != null &&
+                              count != null &&
+                              type.isNotEmpty &&
+                              int.tryParse(price) != null &&
+                              int.tryParse(count) != null) {
+                            logMap[type] = {
+                              'price': int.parse(price),
+                              'count': int.parse(count),
+                            };
+                          }
                         }
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ListView.separated(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: state.tickets.length,
+                              itemBuilder: (context, index) {
+                                return DynamicTxtFieldEdit(
+                                  validator: (p0) => validator(p0),
+                                  index: index,
+                                  ticket: state.tickets[index],
+                                  isEdit: true,
+                                );
+                              },
+                              separatorBuilder:
+                                  (context, index) => SizedBox(height: 10),
+                            ),
+                            SizedBox(height: 20),
+                            ElevatedButton(
+                              onPressed: () {
+                                final state = context.read<ActionBloc>().state;
+                                if (state is EditTicketsUpdated) {
+                                  for (var ticket in state.tickets) {
+                                    final type = ticket['type']?.trim();
+                                    final price = ticket['price']?.trim();
+                                    final count = ticket['count']?.trim();
+                                    if (type != null &&
+                                        price != null &&
+                                        count != null &&
+                                        type.isNotEmpty &&
+                                        int.tryParse(price) != null &&
+                                        int.tryParse(count) != null) {
+                                      logMap[type] = {
+                                        'price': int.parse(price),
+                                        'count': int.parse(count),
+                                      };
+                                    }
+                                  }
+                                  log("Updated Edit Tickets: $logMap");
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.grey,
+                                foregroundColor: Colors.white,
+                              ),
+                              child: Text("Log Tickets"),
+                            ),
+                          ],
+                        );
                       }
+                      return const SizedBox.shrink();
+                    },
+                  ),
 
-                      return ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: state.tickets.length,
-                        itemBuilder: (context, index) {
-                          return DynamicTxtField(
-                            validator: (p0) => validator(p0),
-                            index: index,
-                            ticket: state.tickets[index],
-                          );
-                        },
-                        separatorBuilder:
-                            (context, index) => const SizedBox(height: 10),
-                      );
-                    }
-                    return const SizedBox.shrink();
-                  },
-                ),
-                HeadingTextField(
-                  headline: 'Benefits of Each ticket:',
-                  controller: benefitsController,
-                  hint: 'Ticket Benefits',
-                  borderColor: themeColor,
-                  validator: (p0) {
-                    return validator(p0);
-                  },
-                ),
-                SizedBox(height: 20),
+                  HeadingTextField(
+                    headline: 'Benefits of Each ticket:',
+                    controller: benefitsController,
+                    hint: 'Ticket Benefits',
+                    borderColor: themeColor,
+                    validator: (p0) {
+                      return validator(p0);
+                    },
+                  ),
+                  SizedBox(height: 20),
 
-                HeadingTextField(
-                  headline: 'Organizer Group Name:',
-                  controller: organizerGrpController,
-                  hint: 'Organizer Group',
-                  borderColor: themeColor,
-                  validator: (p0) {
-                    return validator(p0);
-                  },
-                ),
-                SizedBox(height: 10),
+                  HeadingTextField(
+                    headline: 'Organizer Group Name:',
+                    controller: organizerGrpController,
+                    hint: 'Organizer Group',
+                    borderColor: themeColor,
+                    validator: (p0) {
+                      return validator(p0);
+                    },
+                  ),
+                  SizedBox(height: 10),
 
-                EventCoord(
-                  validator: (p0) {
-                    return validator(p0);
-                  },
-                  lattitude: lattitudeController,
-                  longitude: longitudeController,
-                ),
-                // CategoryField(
-                //   validator: (p0) {
-                //     return validator(p0);
-                //   },
-                // ),
-                SizedBox(height: 20),
-                LastDatePicker(
-                  lastDateController: lastDateController,
-                  validator: (p0) {
-                    return validator(p0);
-                  },
-                ),
-                SizedBox(height: 20),
-
-                // CreateEventFooter(
-                //   nextonPressed: () {
-                //     if (keyState.currentState!.validate()) {
-                //       double? lat = double.tryParse(lattitudeController.text);
-                //       double? lon = double.tryParse(longitudeController.text);
-                //       log(uid);
-                //       log(ticketMap.toString());
-                //       log(benefitsController.text);
-                //       log(organizerGrpController.text);
-                //       log(lastDateController.text);
-                //       print(lat);
-                //       print(lon);
-                //       log(category.toString());
-                //       context.read<ActionBloc>().add(
-                //         UploadCoverPhoto(
-                //           uid: uid,
-                //           name: widget.name,
-                //           description: widget.description,
-                //           venue: widget.venue,
-                //           imagePath: widget.imagePath!,
-                //           country: widget.country,
-                //           tickets: ticketMap,
-                //           benefits: benefitsController.text,
-                //           group: organizerGrpController.text,
-                //           registrationDeadline: lastDateController.text,
-                //           latitude: lat!,
-                //           longitude: lon!,
-                //           category: category!,
-                //         ),
-                //       );
-                //     }
-                //   },
-                //   prevonPressed: () {
-                //     Navigator.of(context).pop();
-                //   },
-                //   text: 'Host',
-                // ),
-              ],
+                  EventCoord(
+                    validator: (p0) {
+                      return validator(p0);
+                    },
+                    lattitude: lattitudeController,
+                    longitude: longitudeController,
+                  ),
+                  EditCategoryField(
+                    validator: (p0) {
+                      return validator(p0);
+                    },
+                    text: widget.post.category,
+                  ),
+                  SizedBox(height: 20),
+                  LastDatePicker(
+                    lastDateController: lastDateController,
+                    validator: (p0) {
+                      return validator(p0);
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      log(logMap.toString());
+                    },
+                    child: Text('test'),
+                  ),
+                  EditEventFooter(
+                    text: 'Update',
+                    nextonPressed: () {
+                      if (keyState.currentState!.validate()) {
+                        double? lat = double.tryParse(lattitudeController.text);
+                        double? lon = double.tryParse(longitudeController.text);
+                        category ??= widget.post.category;
+                        log(uid);
+                        log(logMap.toString());
+                        log(benefitsController.text);
+                        log(organizerGrpController.text);
+                        log(lastDateController.text);
+                        print(lat);
+                        print(lon);
+                        log(category.toString());
+                        context.read<ActionBloc>().add(
+                          UpdateCoverPhotoEvent(
+                            post: widget.post,
+                            uid: uid,
+                            name: widget.name,
+                            description: widget.description,
+                            venue: widget.venue,
+                            imagePath: widget.imagePath,
+                            country: widget.country,
+                            tickets: logMap,
+                            benefits: benefitsController.text,
+                            group: organizerGrpController.text,
+                            registrationDeadline: lastDateController.text,
+                            latitude: lat!,
+                            longitude: lon!,
+                            category: category!,
+                            imageUrl: widget.post.imageUrl,
+                            imagePublicId: widget.post.imagePublicId,
+                          ),
+                        );
+                      }
+                    },
+                    prevonPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
