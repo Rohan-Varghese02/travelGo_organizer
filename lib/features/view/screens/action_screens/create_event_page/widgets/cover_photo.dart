@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
 import 'package:travelgo_organizer/features/logic/action/action_bloc.dart';
+import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
 class CoverPhoto extends StatelessWidget {
   final String? imagePath;
@@ -17,13 +17,11 @@ class CoverPhoto extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Event Cover Image :',
-          style: GoogleFonts.poppins(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: Colors.black,
-          ),
+        StyleText(
+          text: 'Enter Cover Image:',
+          size: 16,
+          fontWeight: FontWeight.w500,
+          color: black,
         ),
         GestureDetector(
           onTap: () {

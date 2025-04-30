@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
 import 'package:travelgo_organizer/core/services/auth/authservice.dart';
 import 'package:travelgo_organizer/data/models/post_data.dart';
@@ -13,6 +12,7 @@ import 'package:travelgo_organizer/features/view/screens/action_screens/create_e
 import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/widgets/event_coord.dart';
 import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/widgets/last_date_picker.dart';
 import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/widgets/ticket_header.dart';
+import 'package:travelgo_organizer/features/view/widgets/custom_app_bar.dart';
 import 'package:travelgo_organizer/features/view/widgets/heading_text_field.dart';
 
 class CreateNextPage extends StatefulWidget {
@@ -42,11 +42,6 @@ class _CreateNextPageState extends State<CreateNextPage> {
     super.initState();
     uid = Authservice().getUserUid();
     context.read<ActionBloc>().add(LoadCategories());
-    log(widget.name);
-    log(widget.imagePath!);
-    log(widget.description);
-    log(widget.venue);
-    log(widget.country);
   }
 
   TextEditingController benefitsController = TextEditingController();
@@ -62,13 +57,10 @@ class _CreateNextPageState extends State<CreateNextPage> {
   Widget build(BuildContext context) {
     return BlocListener<ActionBloc, ActionState>(
       listener: (context, state) {
-        log(state.runtimeType.toString());
         if (state is CategoryChoosed) {
           category = state.selectedCategory;
         }
         if (state is SuccessfullyUploadedPhoto) {
-          log(state.imagePublicId);
-          log(state.imageUrl);
           final post = PostDataModel(
             timestamp: DateTime.now(),
             uid: uid,
@@ -84,7 +76,8 @@ class _CreateNextPageState extends State<CreateNextPage> {
             registrationDeadline: state.registrationDeadline,
             latitude: state.latitude,
             longitude: state.longitude,
-            category: state.category, postId: '',
+            category: state.category,
+            postId: '',
           );
           context.read<ActionBloc>().add(UploadPostEvent(post: post));
         }
@@ -102,17 +95,10 @@ class _CreateNextPageState extends State<CreateNextPage> {
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          // automaticallyImplyLeading: false,
-          title: Text(
-            'Create Event',
-            style: GoogleFonts.poppins(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              color: themeColor,
-            ),
-          ),
-          centerTitle: true,
+        appBar: CustomAppBar(
+          title: 'Create Event',
+          color: themeColor,
+          showBack: false,
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -152,7 +138,9 @@ class _CreateNextPageState extends State<CreateNextPage> {
                           itemCount: state.tickets.length,
                           itemBuilder: (context, index) {
                             return DynamicTxtField(
-                              validator: (p0) => validator(p0),
+                              typevalidator: (p0) => validator(p0, 'type'),
+                              pricevalidator: (p0) => validator(p0, 'price'),
+                              countvalidator: (p0) => validator(p0, 'count'),
                               index: index,
                               ticket: state.tickets[index],
                             );
@@ -170,7 +158,7 @@ class _CreateNextPageState extends State<CreateNextPage> {
                     hint: 'Ticket Benefits',
                     borderColor: themeColor,
                     validator: (p0) {
-                      return validator(p0);
+                      return validator(p0, 'Benefits');
                     },
                   ),
                   SizedBox(height: 20),
@@ -181,28 +169,28 @@ class _CreateNextPageState extends State<CreateNextPage> {
                     hint: 'Organizer Group',
                     borderColor: themeColor,
                     validator: (p0) {
-                      return validator(p0);
+                      return validator(p0, 'Organization Name');
                     },
                   ),
                   SizedBox(height: 10),
 
                   EventCoord(
                     validator: (p0) {
-                      return validator(p0);
+                      return validator(p0, 'Coordiantes');
                     },
                     lattitude: lattitudeController,
                     longitude: longitudeController,
                   ),
                   CategoryField(
                     validator: (p0) {
-                      return validator(p0);
+                      return validator(p0, 'category');
                     },
                   ),
                   SizedBox(height: 20),
                   LastDatePicker(
                     lastDateController: lastDateController,
                     validator: (p0) {
-                      return validator(p0);
+                      return validator(p0, 'Event Date');
                     },
                   ),
                   SizedBox(height: 20),
@@ -245,9 +233,9 @@ class _CreateNextPageState extends State<CreateNextPage> {
     );
   }
 
-  String? validator(value) {
+  String? validator(value, String message) {
     if (value == null || value.isEmpty) {
-      return 'Fill the TextField';
+      return 'Enter $message';
     }
     return null;
   }

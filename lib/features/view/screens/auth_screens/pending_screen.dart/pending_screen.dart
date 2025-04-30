@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
 import 'package:travelgo_organizer/core/services/auth/auth_gate.dart';
 import 'package:travelgo_organizer/data/models/organizer_data.dart';
 import 'package:travelgo_organizer/features/logic/auth/auth_bloc.dart';
+import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
 class PendingScreen extends StatelessWidget {
   final OrganizerDataModel organizerData;
@@ -28,13 +28,7 @@ class PendingScreen extends StatelessWidget {
                   radius: 25,
                   backgroundImage: NetworkImage(organizerData.imageUrl),
                 ),
-                Text(
-                  organizerData.name,
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+               StyleText(text: organizerData.name, color: white,fontWeight: FontWeight.bold,),
               ],
             ),
           ),
@@ -56,28 +50,10 @@ class PendingScreen extends StatelessWidget {
             children: [
               Image.asset('assets/hourglass.png'),
               SizedBox(height: 20),
-              Text(
-                'Request Pending',
-                style: GoogleFonts.poppins(
-                  fontSize: 30,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
+              StyleText(text: 'Request Pending',size: 30, fontWeight: FontWeight.normal,),
               SizedBox(height: 20),
-              Text(
-                'Your request is being reviewed please wait until verified',
-                style: GoogleFonts.poppins(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w300,
-                ),
-              ),
-              Text(
-                'keep refreshing to know the status',
-                style: GoogleFonts.poppins(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w300,
-                ),
-              ),
+              StyleText(text: 'Your request is being reviewed please wait until verified',size: 14, fontWeight: FontWeight.w300,),
+              StyleText(text: 'keep refreshing to know the status', size: 14, fontWeight: FontWeight.w300,),
               SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(

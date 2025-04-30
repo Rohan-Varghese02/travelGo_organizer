@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
+import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
 class RegisterHeader extends StatelessWidget {
   const RegisterHeader({super.key});
@@ -10,17 +10,12 @@ class RegisterHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Create an',
-          style: GoogleFonts.poppins(fontSize: 32, fontWeight: FontWeight.w500),
-        ),
-        Text(
-          'account',
-          style: GoogleFonts.poppins(
-            fontSize: 32,
-            fontWeight: FontWeight.w500,
-            color: themeColor,
-          ),
+        StyleText(text: 'Create an', size: 32, fontWeight: FontWeight.w500),
+        StyleText(
+          text: 'account',
+          size: 32,
+          fontWeight: FontWeight.w500,
+          color: themeColor,
         ),
       ],
     );

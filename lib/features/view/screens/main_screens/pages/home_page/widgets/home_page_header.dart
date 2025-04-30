@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
 import 'package:travelgo_organizer/data/models/organizer_data.dart';
+import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
 class HomePageHeader extends StatelessWidget {
   final OrganizerDataModel organizerData;
@@ -20,14 +20,12 @@ class HomePageHeader extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Hello,',
-                  style: GoogleFonts.poppins(color: grey99, fontSize: 18),
-                ),
+                StyleText(text: 'Hello,', color: grey99, size: 18),
                 SizedBox(height: 5),
-                Text(
-                  'Hi ${organizerData.name}',
-                  style: GoogleFonts.poppins(color: themeColor, fontSize: 20),
+                StyleText(
+                  text: 'Hi ${organizerData.name}',
+                  color: themeColor,
+                  size: 20,
                 ),
               ],
             ),
@@ -49,19 +47,14 @@ class HomePageHeader extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  organizerData.name,
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                  ),
+                StyleText(
+                  text: organizerData.name,
+                  color: white,
+                  fontWeight: FontWeight.w700,
+                  size: 16,
                 ),
                 SizedBox(height: 5),
-                Text(
-                  '${organizerData.designation} at ${organizerData.company}',
-                  style: GoogleFonts.poppins(color: lightblue, fontSize: 16),
-                ),
+                StyleText(text: '${organizerData.designation} at ${organizerData.company}', color: lightblue,size: 16,),
                 SizedBox(height: 5),
                 Divider(thickness: 0),
                 SizedBox(height: 5),
@@ -69,10 +62,7 @@ class HomePageHeader extends StatelessWidget {
                   children: [
                     Icon(FontAwesomeIcons.user, size: 13, color: Colors.white),
                     SizedBox(width: 5),
-                    Text(
-                      '${organizerData.followersCount} Followers',
-                      style: GoogleFonts.poppins(color: Colors.white),
-                    ),
+                    StyleText(text: '${organizerData.followersCount} Followers', color: white,),
                   ],
                 ),
                 SizedBox(height: 15),

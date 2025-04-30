@@ -51,6 +51,7 @@ class CountrySelected extends ActionEvent {
 
 class CoverImageNotFound extends ActionEvent {}
 
+// ignore: must_be_immutable
 class UploadCoverPhoto extends ActionEvent {
   final String uid;
   final String name;

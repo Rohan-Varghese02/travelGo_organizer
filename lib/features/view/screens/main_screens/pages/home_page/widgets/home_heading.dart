@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
 class HomeHeading extends StatelessWidget {
   final String text;
@@ -7,13 +7,7 @@ class HomeHeading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: GoogleFonts.poppins(
-        fontSize: 20,
-        decoration: TextDecoration.underline,
-        fontWeight: FontWeight.bold,
-      ),
-    );
+    return StyleText(text: text, size: 20,fontWeight: FontWeight.bold,decoration: TextDecoration.underline,)
+    ;
   }
 }

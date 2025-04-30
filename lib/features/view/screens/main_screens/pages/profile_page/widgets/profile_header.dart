@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
+import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
 class ProfileHeader extends StatelessWidget {
   final int? folowers;
@@ -16,39 +16,31 @@ class ProfileHeader extends StatelessWidget {
         children: [
           Column(
             children: [
-              Text(
-                'Members Following',
-                style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  fontWeight: FontWeight.normal,
-                  color: grey50,
-                ),
+              StyleText(
+                text: 'Members Following',
+                size: 16,
+                color: grey50,
+                fontWeight: FontWeight.normal,
               ),
-              Text(
-                folowers.toString(),
-                style: GoogleFonts.poppins(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
+              StyleText(
+                text: folowers.toString(),
+                size: 22,
+                fontWeight: FontWeight.bold,
               ),
             ],
           ),
           Column(
             children: [
-              Text(
-                'Events Hosted',
-                style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  fontWeight: FontWeight.normal,
-                  color: grey50,
-                ),
+              StyleText(
+                text: 'Events Hosted',
+                size: 16,
+                fontWeight: FontWeight.normal,
+                color: grey50,
               ),
-              Text(
-                post.toString(),
-                style: GoogleFonts.poppins(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
+              StyleText(
+                text: post.toString(),
+                size: 22,
+                fontWeight: FontWeight.bold,
               ),
             ],
           ),

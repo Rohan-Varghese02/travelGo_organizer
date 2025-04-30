@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
 import 'package:travelgo_organizer/core/services/stream_services.dart';
 import 'package:travelgo_organizer/data/models/organizer_data.dart';
@@ -13,6 +12,7 @@ import 'package:travelgo_organizer/features/view/screens/main_screens/pages/prof
 import 'package:travelgo_organizer/features/view/screens/main_screens/pages/profile_page/widgets/logout_dailog.dart';
 import 'package:travelgo_organizer/features/view/screens/main_screens/pages/profile_page/widgets/profile_header.dart';
 import 'package:travelgo_organizer/features/view/screens/main_screens/pages/profile_page/widgets/profile_btn.dart';
+import 'package:travelgo_organizer/features/view/widgets/custom_app_bar.dart';
 import 'package:travelgo_organizer/features/view/widgets/heading_text_field.dart';
 import 'package:travelgo_organizer/features/view/widgets/profile_avatar.dart';
 
@@ -75,12 +75,10 @@ class _ProfilePageState extends State<ProfilePage> {
           expController.text = organizerData.experience;
 
           return Scaffold(
-            appBar: AppBar(
-              title: Text(
-                'Profile',
-                style: GoogleFonts.poppins(color: themeColor),
-              ),
-              centerTitle: true,
+            appBar: CustomAppBar(
+              title: 'Profile',
+              color: themeColor,
+              center: true,
               actions: [
                 IconButton(
                   onPressed: () {

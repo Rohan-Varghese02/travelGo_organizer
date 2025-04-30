@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
 import 'package:travelgo_organizer/features/view/widgets/custom_txt_field.dart';
+import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
 class EventCoord extends StatelessWidget {
   final TextEditingController longitude;
@@ -20,13 +20,11 @@ class EventCoord extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Event Coordinates',
-          style: GoogleFonts.poppins(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: Colors.black,
-          ),
+       StyleText(
+          text: 'Event Coordinates:',
+          size: 16,
+          fontWeight: FontWeight.w500,
+          color: black,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

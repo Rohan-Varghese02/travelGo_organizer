@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
 import 'package:travelgo_organizer/core/services/auth/authservice.dart';
 import 'package:travelgo_organizer/data/models/post_data.dart';
@@ -13,6 +12,7 @@ import 'package:travelgo_organizer/features/view/screens/main_screens/pages/my_e
 import 'package:travelgo_organizer/features/view/screens/main_screens/pages/my_event_page/edit_page/widgets/edit_event_footer.dart';
 import 'package:travelgo_organizer/features/view/screens/main_screens/pages/my_event_page/edit_page/widgets/edit_ticket_header.dart';
 import 'package:travelgo_organizer/features/view/widgets/heading_text_field.dart';
+import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
 class EditNextPage extends StatefulWidget {
   final String name;
@@ -43,7 +43,6 @@ class _EditNextPageState extends State<EditNextPage> {
   void initState() {
     super.initState();
     uid = Authservice().getUserUid();
-    log(widget.imagePath);
     context.read<ActionBloc>().add(LoadCategories());
     final tickets =
         widget.post.tickets.entries.map((entry) {
@@ -78,7 +77,6 @@ class _EditNextPageState extends State<EditNextPage> {
     log(widget.post.tickets.toString());
     return BlocListener<ActionBloc, ActionState>(
       listener: (context, state) {
-        log(state.runtimeType.toString());
         if (state is CategoryChoosed) {
           category = state.selectedCategory;
         }
@@ -101,14 +99,7 @@ class _EditNextPageState extends State<EditNextPage> {
       child: Scaffold(
         appBar: AppBar(
           // automaticallyImplyLeading: false,
-          title: Text(
-            'Edit Event',
-            style: GoogleFonts.poppins(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              color: themeColor,
-            ),
-          ),
+          title: StyleText(text: 'Edit Event', size: 24,color: themeColor,fontWeight: FontWeight.w600,),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -159,36 +150,6 @@ class _EditNextPageState extends State<EditNextPage> {
                               },
                               separatorBuilder:
                                   (context, index) => SizedBox(height: 10),
-                            ),
-                            SizedBox(height: 20),
-                            ElevatedButton(
-                              onPressed: () {
-                                final state = context.read<ActionBloc>().state;
-                                if (state is EditTicketsUpdated) {
-                                  for (var ticket in state.tickets) {
-                                    final type = ticket['type']?.trim();
-                                    final price = ticket['price']?.trim();
-                                    final count = ticket['count']?.trim();
-                                    if (type != null &&
-                                        price != null &&
-                                        count != null &&
-                                        type.isNotEmpty &&
-                                        int.tryParse(price) != null &&
-                                        int.tryParse(count) != null) {
-                                      logMap[type] = {
-                                        'price': int.parse(price),
-                                        'count': int.parse(count),
-                                      };
-                                    }
-                                  }
-                                  log("Updated Edit Tickets: $logMap");
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.grey,
-                                foregroundColor: Colors.white,
-                              ),
-                              child: Text("Log Tickets"),
                             ),
                           ],
                         );
@@ -253,14 +214,6 @@ class _EditNextPageState extends State<EditNextPage> {
                         double? lat = double.tryParse(lattitudeController.text);
                         double? lon = double.tryParse(longitudeController.text);
                         category ??= widget.post.category;
-                        log(uid);
-                        log(logMap.toString());
-                        log(benefitsController.text);
-                        log(organizerGrpController.text);
-                        log(lastDateController.text);
-                        print(lat);
-                        print(lon);
-                        log(category.toString());
                         context.read<ActionBloc>().add(
                           UpdateCoverPhotoEvent(
                             post: widget.post,

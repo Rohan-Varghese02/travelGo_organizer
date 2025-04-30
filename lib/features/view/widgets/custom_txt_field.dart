@@ -25,6 +25,7 @@ class CustomTxtField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+    
       readOnly: readOnly ?? false,
       validator: validator,
       controller: controller,

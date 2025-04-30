@@ -2,13 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
 import 'package:travelgo_organizer/core/services/auth/auth_gate.dart';
 import 'package:travelgo_organizer/features/logic/auth/auth_bloc.dart';
 import 'package:travelgo_organizer/features/logic/user/user_bloc.dart';
 import 'package:travelgo_organizer/features/view/screens/auth_screens/reject_screen/reject_btn.dart';
 import 'package:travelgo_organizer/features/view/screens/main_screens/pages/profile_page/edit_profile_page.dart';
+import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
 class RejectScreen extends StatefulWidget {
   const RejectScreen({super.key});
@@ -32,7 +32,7 @@ class _RejectScreenState extends State<RejectScreen> {
         if (state is ProfileDetailsFetched) {
           final organizerData = state.organizerData;
           return Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: white,
             appBar: AppBar(
               actions: [
                 GestureDetector(
@@ -54,12 +54,10 @@ class _RejectScreenState extends State<RejectScreen> {
                           radius: 25,
                           backgroundImage: NetworkImage(organizerData.imageUrl),
                         ),
-                        Text(
-                          organizerData.name,
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        StyleText(
+                          text: organizerData.name,
+                          color: white,
+                          fontWeight: FontWeight.bold,
                         ),
                       ],
                     ),
@@ -79,27 +77,21 @@ class _RejectScreenState extends State<RejectScreen> {
                       'https://i.pinimg.com/474x/65/8e/07/658e0702ed408e5f62ec06d754eaa087.jpg',
                     ),
                     SizedBox(height: 20),
-                    Text(
-                      'Request Rejected',
-                      style: GoogleFonts.poppins(
-                        fontSize: 30,
-                        fontWeight: FontWeight.normal,
-                      ),
+                    StyleText(
+                      text: 'Request Rejected',
+                      size: 30,
+                      fontWeight: FontWeight.normal,
                     ),
                     SizedBox(height: 20),
-                    Text(
-                      'Your request as organizer has been',
-                      style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w300,
-                      ),
+                    StyleText(
+                      text: 'Your request as organizer has been',
+                      size: 14,
+                      fontWeight: FontWeight.w300,
                     ),
-                    Text(
-                      'rejected please try again later',
-                      style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w300,
-                      ),
+                    StyleText(
+                      text: 'rejected please try again later',
+                      size: 14,
+                      fontWeight: FontWeight.w300,
                     ),
                     SizedBox(height: 20),
 

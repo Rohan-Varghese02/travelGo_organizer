@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
+import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
 class LoginButton extends StatelessWidget {
   final String text;
@@ -19,10 +19,7 @@ class LoginButton extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
       onPressed: onPressed,
-      child: Text(
-        text,
-        style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500),
-      ),
+      child: StyleText(text: text, size: 16, fontWeight: FontWeight.w500,),
     );
   }
 }

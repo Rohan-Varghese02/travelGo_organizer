@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
+import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
 class ActionTile extends StatelessWidget {
   final String assetImage;
@@ -29,7 +29,7 @@ class ActionTile extends StatelessWidget {
             ),
           ),
           SizedBox(height: 5),
-          Text(text, style: GoogleFonts.poppins(color: grey99)),
+          StyleText(text: text, color: grey99,),
         ],
       ),
     );

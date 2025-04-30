@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
 import 'package:travelgo_organizer/data/models/post_data.dart';
 import 'package:travelgo_organizer/features/logic/action/action_bloc.dart';
+import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
 void deleteDailog(BuildContext context, PostDataModel post) {
   showDialog(
@@ -11,7 +12,7 @@ void deleteDailog(BuildContext context, PostDataModel post) {
     builder: (context) {
       return AlertDialog(
         backgroundColor: Colors.white,
-        title: Text("Delete", style: GoogleFonts.poppins(color: themeColor)),
+        title: StyleText(text: 'Delete',color: themeColor,),
         content: Text.rich(
           TextSpan(
             text: 'Do you really wish to delete the event ',
@@ -27,10 +28,7 @@ void deleteDailog(BuildContext context, PostDataModel post) {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(
-              "Cancel",
-              style: GoogleFonts.poppins(color: Colors.black),
-            ),
+            child: StyleText(text: 'Cancel',color: black,),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -44,7 +42,7 @@ void deleteDailog(BuildContext context, PostDataModel post) {
               context.read<ActionBloc>().add(DeletePostIntiated(post: post));
               Navigator.of(context).pop();
             },
-            child: Text("Delete", style: GoogleFonts.poppins()),
+            child: StyleText(text: 'Delete'),
           ),
         ],
       );

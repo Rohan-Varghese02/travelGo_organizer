@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
+import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
 class ProfileBtn extends StatelessWidget {
   final String text;
@@ -16,7 +16,7 @@ class ProfileBtn extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
       onPressed: onPressed,
-      child: Text(text, style: GoogleFonts.poppins()),
+      child: StyleText(text: text, color: white),
     );
   }
 }

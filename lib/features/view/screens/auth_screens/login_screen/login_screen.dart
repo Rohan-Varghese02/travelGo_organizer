@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:travelgo_organizer/core/constants/colors.dart';
 import 'package:travelgo_organizer/core/services/auth/auth_gate.dart';
 import 'package:travelgo_organizer/features/logic/auth/auth_bloc.dart';
 import 'package:travelgo_organizer/features/view/screens/auth_screens/login_screen/widgets/forgot_pass.dart';
@@ -10,10 +11,9 @@ import 'package:travelgo_organizer/features/view/screens/auth_screens/login_scre
 import 'package:travelgo_organizer/features/view/screens/auth_screens/login_screen/widgets/login_footer.dart';
 import 'package:travelgo_organizer/features/view/screens/auth_screens/login_screen/widgets/login_header.dart';
 import 'package:travelgo_organizer/features/view/screens/auth_screens/register_screen/register_screen.dart';
-import 'package:travelgo_organizer/features/view/widgets/auth%20widgets/divider_with_or.dart';
-import 'package:travelgo_organizer/features/view/widgets/auth%20widgets/google_button.dart';
 import 'package:travelgo_organizer/features/view/widgets/auth%20widgets/heading_password_field.dart';
 import 'package:travelgo_organizer/features/view/widgets/heading_text_field.dart';
+import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -63,10 +63,10 @@ class _LoginScreenState extends State<LoginScreen> {
               } else if (state is ResetPasswordFailure) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(
-                      'Invalid Email Address/ It has not been registered',
+                    content: StyleText(
+                      text: 'Invalid Email Address/ It has not been registered',
                     ),
-                    backgroundColor: Colors.red,
+                    backgroundColor: errorred,
                   ),
                 );
               }

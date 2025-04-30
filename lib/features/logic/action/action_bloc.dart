@@ -21,7 +21,7 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
     on<UpdateTicketType>(updateTicketType);
     on<UpdateTicketCount>(updateTicketCount);
     on<UpdateTicketPrice>(updateTicketPrice);
-
+    
     on<LoadCategories>(loadCategories);
     on<CategorySelected>(categorySelected);
     on<LoadCountries>(loadCountries);
@@ -254,12 +254,7 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
     try {
       final post = event.post;
 
-      final postRef =
-          FirebaseFirestore.instance
-              .collection('posts')
-              .doc(post.uid)
-              .collection('posts')
-              .doc();
+      final postRef = FirebaseFirestore.instance.collection('post').doc();
       post.postId = postRef.id;
       await postRef.set(post.toMap());
 
@@ -338,11 +333,9 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
   ) async {
     try {
       final post = event.post;
-
+      log(post.postId);
       final postRef = FirebaseFirestore.instance
-          .collection('posts')
-          .doc(post.uid)
-          .collection('posts')
+          .collection('post')
           .doc(post.postId);
 
       await postRef.update(post.toMap());

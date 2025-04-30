@@ -35,6 +35,8 @@ class HeadingTextField extends StatelessWidget {
           ),
         ),
         TextFormField(
+          minLines: 1,
+          maxLines: 20,
           readOnly: readOnly ?? false,
           validator: validator,
           controller: controller,

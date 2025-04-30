@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
+import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
 class LastDatePicker extends StatelessWidget {
   final TextEditingController lastDateController;
@@ -17,13 +17,11 @@ class LastDatePicker extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          ' Date of Event',
-          style: GoogleFonts.poppins(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: Colors.black,
-          ),
+        StyleText(
+          text: 'Date of Event',
+          size: 16,
+          fontWeight: FontWeight.w500,
+          color: black,
         ),
         GestureDetector(
           onTap: () async {

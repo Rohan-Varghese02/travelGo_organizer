@@ -25,9 +25,8 @@ class StreamServices {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     return firestore
-        .collection('posts')
-        .doc(uid)
-        .collection('posts')
+        .collection('post')
+        .where('uid', isEqualTo: uid)
         // .orderBy('timestamp', descending: true)
         .snapshots()
         .map((snapshot) {

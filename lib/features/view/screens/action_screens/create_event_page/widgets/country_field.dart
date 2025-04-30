@@ -2,9 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
 import 'package:travelgo_organizer/features/logic/action/action_bloc.dart';
+import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
 class CountryField extends StatelessWidget {
   final String? Function(String?)? validator;
@@ -16,13 +16,11 @@ class CountryField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Destination of Event',
-          style: GoogleFonts.poppins(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: Colors.black,
-          ),
+        StyleText(
+          text: 'Destination of Event',
+          size: 16,
+          fontWeight: FontWeight.w500,
+          color: black,
         ),
         const SizedBox(height: 8),
         BlocBuilder<ActionBloc, ActionState>(

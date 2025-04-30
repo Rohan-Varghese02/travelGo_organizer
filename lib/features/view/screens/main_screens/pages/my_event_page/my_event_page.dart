@@ -2,15 +2,17 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
 import 'package:travelgo_organizer/core/services/auth/authservice.dart';
 import 'package:travelgo_organizer/core/services/stream_services.dart';
 import 'package:travelgo_organizer/data/models/post_data.dart';
 import 'package:travelgo_organizer/features/logic/action/action_bloc.dart';
+import 'package:travelgo_organizer/features/view/screens/main_screens/pages/detailed_page/detailed_page.dart';
 import 'package:travelgo_organizer/features/view/screens/main_screens/pages/my_event_page/edit_page/edit_page.dart';
 import 'package:travelgo_organizer/features/view/screens/main_screens/pages/my_event_page/widgets/delete_dailog.dart';
+import 'package:travelgo_organizer/features/view/widgets/custom_app_bar.dart';
+import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
 class MyEventPage extends StatefulWidget {
   const MyEventPage({super.key});
@@ -37,31 +39,25 @@ class _MyEventPageState extends State<MyEventPage> {
           );
         }
         if (state is DeletePostAlertBox) {
-          deleteDailog(context,state.post);
+          deleteDailog(context, state.post);
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Text(
-            'My Events',
-            style: GoogleFonts.poppins(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              color: themeColor,
-            ),
-          ),
-          centerTitle: true,
+        appBar: CustomAppBar(
+          title: 'My Events',
+          color: themeColor,
+          center: true,
+          showBack: false,
         ),
         body: StreamBuilder<List<PostDataModel>>(
           stream: StreamServices().getPostsByOrganizer(uid),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
+              return Center(child: const CircularProgressIndicator());
             }
 
             if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Text('No posts found.');
+              return Center(child: const Text('No posts found.'));
             }
 
             final posts = snapshot.data!;
@@ -72,6 +68,13 @@ class _MyEventPageState extends State<MyEventPage> {
                 final date = DateTime.parse(post.registrationDeadline);
                 final formattedDate = DateFormat('MMMM dd, yy').format(date);
                 return ListTile(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => DetailedPage(post: post),
+                      ),
+                    );
+                  },
                   leading: SizedBox(
                     width: 72,
                     height: 200,
@@ -80,13 +83,13 @@ class _MyEventPageState extends State<MyEventPage> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  title: Text(
-                    post.name,
-                    style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+                  title: StyleText(
+                    text: post.name,
+                    fontWeight: FontWeight.bold,
                   ),
-                  subtitle: Text(
-                    'Time : $formattedDate',
-                    style: GoogleFonts.poppins(fontWeight: FontWeight.w300),
+                  subtitle: StyleText(
+                    text: 'Time : $formattedDate',
+                    fontWeight: FontWeight.w300,
                   ),
                   trailing: PopupMenuButton<String>(
                     onSelected: (value) {

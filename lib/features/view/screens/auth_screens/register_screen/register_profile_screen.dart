@@ -3,11 +3,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/features/logic/auth/auth_bloc.dart';
 import 'package:travelgo_organizer/features/view/screens/auth_screens/register_screen/widgets/register_dailog.dart';
 import 'package:travelgo_organizer/features/view/widgets/heading_text_field.dart';
 import 'package:travelgo_organizer/features/view/widgets/long_button.dart';
+import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
 class RegisterProfileScreen extends StatefulWidget {
   final String email;
@@ -23,7 +23,7 @@ class RegisterProfileScreen extends StatefulWidget {
 }
 
 class _RegisterProfileScreenState extends State<RegisterProfileScreen> {
-  final key_State = GlobalKey<FormState>();
+  final keyState = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -98,17 +98,11 @@ class _RegisterProfileScreenState extends State<RegisterProfileScreen> {
                     });
                   }
                   return Form(
-                    key: key_State,
+                    key: keyState,
                     child: Column(
                       children: [
                         SizedBox(height: 20),
-                        Text(
-                          'Profile',
-                          style: GoogleFonts.poppins(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                        StyleText(text: 'Profile', size: 18,fontWeight: FontWeight.w500,),
                         SizedBox(height: 40),
 
                         GestureDetector(
@@ -199,7 +193,7 @@ class _RegisterProfileScreenState extends State<RegisterProfileScreen> {
                         LongButton(
                           text: 'Register',
                           onPressed: () {
-                            if (key_State.currentState!.validate()) {
+                            if (keyState.currentState!.validate()) {
                               if (imagePath != null) {
                                 context.read<AuthBloc>().add(
                                   UploadImageEvent(imagePath: imagePath),

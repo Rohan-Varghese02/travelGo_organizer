@@ -2,14 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
 import 'package:travelgo_organizer/features/logic/action/action_bloc.dart';
 import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/create_next_page.dart';
-
 import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/widgets/country_field.dart';
 import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/widgets/cover_photo.dart';
 import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/widgets/create_event_footer.dart';
+import 'package:travelgo_organizer/features/view/widgets/custom_app_bar.dart';
 
 import 'package:travelgo_organizer/features/view/widgets/heading_text_field.dart';
 
@@ -34,7 +33,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     TextEditingController descriptionController = TextEditingController();
     TextEditingController venueController = TextEditingController();
 
-    final key_state = GlobalKey<FormState>();
+    final keystate = GlobalKey<FormState>();
     return BlocConsumer<ActionBloc, ActionState>(
       listenWhen:
           (previous, current) =>
@@ -66,23 +65,17 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
           log(imagePath);
         }
         return Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            title: Text(
-              'Create Event',
-              style: GoogleFonts.poppins(
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
-                color: themeColor,
-              ),
-            ),
-            centerTitle: true,
+          appBar: CustomAppBar(
+            title: 'Create Event',
+            color: themeColor,
+            center: true,
+            showBack: false,
           ),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(15.0),
               child: Form(
-                key: key_state,
+                key: keystate,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -92,7 +85,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       hint: 'Name of Event',
                       borderColor: themeColor,
                       validator: (p0) {
-                        return validator(p0);
+                        return validator(p0, 'Name');
                       },
                     ),
                     SizedBox(height: 20),
@@ -104,7 +97,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       hint: 'Event Description',
                       borderColor: themeColor,
                       validator: (p0) {
-                        return validator(p0);
+                        return validator(p0, 'Description');
                       },
                     ),
                     SizedBox(height: 20),
@@ -115,13 +108,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       hint: 'Event Venue',
                       borderColor: themeColor,
                       validator: (p0) {
-                        return validator(p0);
+                        return validator(p0, 'Venue');
                       },
                     ),
                     SizedBox(height: 20),
                     CountryField(
                       validator: (p0) {
-                        return validator(p0);
+                        return validator(p0, 'Country');
                       },
                     ),
                     SizedBox(height: 10),
@@ -130,7 +123,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
                     CreateEventFooter(
                       nextonPressed: () {
-                        if (key_state.currentState!.validate()) {
+                        if (keystate.currentState!.validate()) {
                           if (imagePath == null) {
                             context.read<ActionBloc>().add(
                               CoverImageNotFound(),
@@ -172,9 +165,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     );
   }
 
-  String? validator(value) {
+  String? validator(value, String message) {
     if (value == null || value.isEmpty) {
-      return 'Fill the TextField';
+      return 'Enter $message';
     }
     return null;
   }

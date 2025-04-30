@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
+import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
 class RegisterInfo extends StatelessWidget {
   const RegisterInfo({super.key});
@@ -12,20 +12,22 @@ class RegisterInfo extends StatelessWidget {
       children: [
         SizedBox(height: 2),
 
-        Text(
-          'Password should contain minimum eight letters',
-          style: GoogleFonts.poppins(color: grey50, fontSize: 10),
+        StyleText(
+          text: 'Password should contain minimum eight letters',
+          color: grey50,
+          size: 10,
         ),
         SizedBox(height: 2),
-        Text(
-          'Password should contain atleast one uppercase',
-          style: GoogleFonts.poppins(color: grey50, fontSize: 10),
+        StyleText(
+          text: 'Password should contain atleast one uppercase',
+          color: grey50,
+          size: 10,
         ),
         SizedBox(height: 2),
-
-        Text(
-          'Password should contain atleast one special character',
-          style: GoogleFonts.poppins(color: grey50, fontSize: 10),
+        StyleText(
+          text: 'Password should contain atleast one special character',
+          color: grey50,
+          size: 10,
         ),
       ],
     );

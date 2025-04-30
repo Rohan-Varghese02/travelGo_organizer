@@ -7,12 +7,14 @@ import 'package:travelgo_organizer/features/logic/action/action_bloc.dart';
 class DynamicTxtField extends StatelessWidget {
   final int index;
   final Map<String, String>? ticket;
-  final String? Function(String?)? validator;
+  final String? Function(String?)? typevalidator;
+  final String? Function(String?)? countvalidator;
+  final String? Function(String?)? pricevalidator;
   const DynamicTxtField({
     super.key,
     required this.index,
-    required this.ticket,
-    this.validator,
+    required this.ticket, this.typevalidator, this.countvalidator, this.pricevalidator,
+    
   });
 
   @override
@@ -23,7 +25,7 @@ class DynamicTxtField extends StatelessWidget {
         Expanded(
           flex: 2,
           child: TextFormField(
-            validator: validator,
+            validator: typevalidator,
             initialValue: ticket!["type"],
             onChanged: (val) {
               context.read<ActionBloc>().add(UpdateTicketType(index, val));
@@ -46,7 +48,7 @@ class DynamicTxtField extends StatelessWidget {
         Expanded(
           flex: 1,
           child: TextFormField(
-            validator: validator,
+            validator: pricevalidator,
             initialValue: ticket!["price"],
             onChanged: (val) {
               context.read<ActionBloc>().add(UpdateTicketPrice(index, val));
@@ -70,7 +72,7 @@ class DynamicTxtField extends StatelessWidget {
         Expanded(
           flex: 1,
           child: TextFormField(
-            validator: validator,
+            validator: countvalidator,
             initialValue: ticket!["count"],
             onChanged: (val) {
               context.read<ActionBloc>().add(UpdateTicketCount(index, val));

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
+import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
 class RegisterDailog extends StatelessWidget {
   final void Function()? onPressed;
@@ -9,7 +9,7 @@ class RegisterDailog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Email already in use', style: GoogleFonts.poppins()),
+      title: StyleText(text:'Email already in use',),
       actions: [
         ElevatedButton(
           style: ElevatedButton.styleFrom(
@@ -20,7 +20,7 @@ class RegisterDailog extends StatelessWidget {
             foregroundColor: Colors.white,
           ),
           onPressed: onPressed,
-          child: Text('Go back'),
+          child: StyleText(text: 'Go back'),
         ),
       ],
     );

@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
 import 'package:travelgo_organizer/data/models/post_data.dart';
 import 'package:travelgo_organizer/features/logic/action/action_bloc.dart';
@@ -10,6 +9,7 @@ import 'package:travelgo_organizer/features/view/screens/main_screens/pages/my_e
 import 'package:travelgo_organizer/features/view/screens/main_screens/pages/my_event_page/edit_page/widgets/edit_country.dart';
 import 'package:travelgo_organizer/features/view/screens/main_screens/pages/my_event_page/edit_page/widgets/edit_cover_pic.dart';
 import 'package:travelgo_organizer/features/view/screens/main_screens/pages/my_event_page/edit_page/widgets/edit_event_footer.dart';
+import 'package:travelgo_organizer/features/view/widgets/custom_app_bar.dart';
 import 'package:travelgo_organizer/features/view/widgets/heading_text_field.dart';
 
 class EditPage extends StatefulWidget {
@@ -51,7 +51,6 @@ class _EditPageState extends State<EditPage> {
         if (state is CountryChoosed) {
           country = state.selectedCountry;
         }
-        
       },
       buildWhen:
           (previous, current) =>
@@ -64,17 +63,10 @@ class _EditPageState extends State<EditPage> {
           log(imagePath);
         }
         return Scaffold(
-          appBar: AppBar(
-            //automaticallyImplyLeading: false,
-            title: Text(
-              'Create Event',
-              style: GoogleFonts.poppins(
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
-                color: themeColor,
-              ),
-            ),
-            centerTitle: true,
+          appBar: CustomAppBar(
+            title: 'Edit Event',
+            color: themeColor,
+            center: true,
           ),
           body: SingleChildScrollView(
             child: Padding(
