@@ -31,7 +31,7 @@ class HeadingTextField extends StatelessWidget {
           style: GoogleFonts.poppins(
             fontSize: 16,
             fontWeight: FontWeight.w500,
-            color: colortext ?? Colors.black,
+            color: colortext ?? black,
           ),
         ),
         TextFormField(

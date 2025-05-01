@@ -23,6 +23,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     // Dashboard (Home Page Actions)
     on<CreateEventClicked>(createEventClicked);
+    on<CouponEventClicked>(couponEventClicked);
   }
 
   // Profile Page ------- Edit Logic
@@ -126,5 +127,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   ) {
     log('Create Event Intitate');
     emit(CreateEventIntitated());
+  }
+
+  FutureOr<void> couponEventClicked(CouponEventClicked event, Emitter<UserState> emit) {
+    emit(CouponEventIntiated(organizerData: event.organizerData));
   }
 }

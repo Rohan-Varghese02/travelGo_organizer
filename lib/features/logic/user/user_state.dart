@@ -46,3 +46,10 @@ class ProfileDetailsFetched extends UserActionState {
 // Dashboard (Home Page Actions)
 
 class CreateEventIntitated extends UserState {}
+
+class CouponEventIntiated extends UserState{
+    final OrganizerDataModel organizerData;
+
+  CouponEventIntiated({required this.organizerData});
+
+}

@@ -3,18 +3,16 @@ part of 'user_bloc.dart';
 @immutable
 sealed class UserEvent {}
 
-
-  // Profile Page ------- Edit Logic
+// Profile Page ------- Edit Logic
 class UserProfileEdit extends UserEvent {
   final OrganizerDataModel organizerData;
 
   UserProfileEdit({required this.organizerData});
 }
 
-
 class UpdateImageEvent extends UserEvent {}
 
-class ProfileUpdatIntiate extends UserEvent{}
+class ProfileUpdatIntiate extends UserEvent {}
 
 class UpdateProfileEvent extends UserEvent {
   final String imagePublicID;
@@ -42,11 +40,16 @@ class UpdateProfileEvent extends UserEvent {
     required this.about,
     required this.experience,
   });
-
 }
-  class FetchDetails extends UserEvent{}
 
+class FetchDetails extends UserEvent {}
 
 // Dashboard (Home Page Actions)
 
-class CreateEventClicked extends UserEvent{}
+class CreateEventClicked extends UserEvent {}
+
+class CouponEventClicked extends UserEvent {
+  final OrganizerDataModel organizerData;
+
+  CouponEventClicked({required this.organizerData});
+}

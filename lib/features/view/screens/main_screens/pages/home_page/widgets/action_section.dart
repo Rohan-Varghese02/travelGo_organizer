@@ -2,11 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:travelgo_organizer/data/models/organizer_data.dart';
 import 'package:travelgo_organizer/features/logic/user/user_bloc.dart';
 import 'package:travelgo_organizer/features/view/screens/main_screens/pages/home_page/widgets/action_tile.dart';
 
 class ActionSection extends StatelessWidget {
-  const ActionSection({super.key});
+  final OrganizerDataModel organizerData;
+  const ActionSection({super.key, required this.organizerData});
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,9 @@ class ActionSection extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            log('Create Event Clicked');
+            context.read<UserBloc>().add(
+              CouponEventClicked(organizerData: organizerData),
+            );
           },
           child: ActionTile(text: 'Coupon', assetImage: 'assets/coupon.png'),
         ),
