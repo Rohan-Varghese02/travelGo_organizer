@@ -10,19 +10,33 @@ import 'package:travelgo_organizer/features/logic/action/action_bloc.dart';
 import 'package:travelgo_organizer/features/view/widgets/heading_text_field.dart';
 import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
-void showCouponCreationDialog(BuildContext context, String organizerUid) async {
+void editCouponCreationDialog(
+  BuildContext context,
+  String organizerUid,
+  CouponData coupon,
+) async {
   List<PostDataModel> posts =
       await StreamServices().getPostsByOrganizer(organizerUid).first;
 
-  PostDataModel? selectedPost;
+  PostDataModel? selectedPost = posts.firstWhere(
+    (post) => post.name == coupon.postName,
+    orElse: () => posts.first,
+  );
   final formState = GlobalKey<FormState>();
-  TextEditingController codenameController = TextEditingController();
-  TextEditingController discountController = TextEditingController();
-  TextEditingController redeemController = TextEditingController();
+  TextEditingController codenameController = TextEditingController(
+    text: coupon.codeName,
+  );
+  TextEditingController discountController = TextEditingController(
+    text: coupon.codeDiscount.toString(),
+  );
+  TextEditingController redeemController = TextEditingController(
+    text: coupon.codeRedeem.toString(),
+  );
   showDialog(
     context: context,
     builder: (context) {
       return StatefulBuilder(
+        // Needed to update dropdown inside the dialog
         builder: (context, setState) {
           return AlertDialog(
             title: StyleText(
@@ -132,22 +146,24 @@ void showCouponCreationDialog(BuildContext context, String organizerUid) async {
                         log(redeemController.text);
                         log(selectedPost!.name);
                         log(selectedPost!.uid);
+                        log(coupon.couponUid!);
                         context.read<ActionBloc>().add(
-                          CreateCoupon(
+                          EditCoupon(
                             coupon: CouponData(
                               codeName: codenameController.text,
                               codeDiscount: discount,
                               codeRedeem: redeem,
                               postName: selectedPost!.name,
-                              postUid: selectedPost!.uid,
+                              postUid: selectedPost!.postId,
+                              couponUid: coupon.couponUid,
+                              isActive: coupon.isActive,
                             ),
                           ),
                         );
-                      } else {
-                        log('failed');
+                        Navigator.of(context).pop();
                       }
                     },
-                    child: StyleText(text: 'Enter', color: white),
+                    child: StyleText(text: 'Update', color: white),
                   ),
                 ],
               ),

@@ -6,6 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 import 'package:travelgo_organizer/core/services/api_services.dart';
+import 'package:travelgo_organizer/core/services/firestore_service.dart';
+import 'package:travelgo_organizer/data/models/coupon_data.dart';
 import 'package:travelgo_organizer/data/models/post_data.dart';
 
 part 'action_event.dart';
@@ -21,7 +23,7 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
     on<UpdateTicketType>(updateTicketType);
     on<UpdateTicketCount>(updateTicketCount);
     on<UpdateTicketPrice>(updateTicketPrice);
-    
+
     on<LoadCategories>(loadCategories);
     on<CategorySelected>(categorySelected);
     on<LoadCountries>(loadCountries);
@@ -73,6 +75,12 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
     //Delete Event --- MyEvents
     on<DeletePostEvent>(deletePostEvent);
     on<DeletePostIntiated>(deletePostIntiated);
+
+    //Create Coupon ---ActionBloc
+    on<CreateCoupon>(createCoupon);
+    on<EditCoupon>(editCoupon);
+    on<CouponStatus>(couponStatus);
+    on<CouponDelete>(couponDelete);
   }
 
   // Create Event --- Events
@@ -377,6 +385,57 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
     } catch (e) {
       log("Error deleting post: $e");
       emit(DeletePostFail());
+    }
+  }
+
+  FutureOr<void> createCoupon(
+    CreateCoupon event,
+    Emitter<ActionState> emit,
+  ) async {
+    final coupon = event.coupon;
+    try {
+      await FirestoreService().uploadCoupon(coupon);
+      emit(CreateCouponSuccess());
+    } catch (e) {
+      emit(CreateCouponFailed());
+    }
+  }
+
+  FutureOr<void> editCoupon(EditCoupon event, Emitter<ActionState> emit) async {
+    final coupon = event.coupon;
+    log('update started');
+
+    try {
+      log(coupon.couponUid.toString());
+      await FirestoreService().updateCoupon(coupon);
+      emit(EditCouponSucess());
+    } catch (e) {
+      emit(EditCouponFailed());
+    }
+  }
+
+  FutureOr<void> couponStatus(
+    CouponStatus event,
+    Emitter<ActionState> emit,
+  ) async {
+    bool isActive = event.isActive;
+    try {
+      await FirestoreService().updateCouponStatus(event.coupon, !isActive);
+      emit(CouponStatusSuccess());
+    } catch (e) {
+      emit(CouponStatusFailed());
+    }
+  }
+
+  FutureOr<void> couponDelete(
+    CouponDelete event,
+    Emitter<ActionState> emit,
+  ) async {
+    try {
+      await FirestoreService().deleteCoupon(event.couponUid);
+      emit(CouponDeleteSuccess());
+    } catch (e) {
+      emit(CouponDeleteFailed());
     }
   }
 }

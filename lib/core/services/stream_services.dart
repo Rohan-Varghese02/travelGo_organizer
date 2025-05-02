@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:travelgo_organizer/data/models/coupon_data.dart';
 import 'package:travelgo_organizer/data/models/organizer_data.dart';
 import 'package:travelgo_organizer/data/models/post_data.dart';
 
 class StreamServices {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
   Stream<DocumentSnapshot<Map<String, dynamic>>> getOrganizerStream(
     String uid,
   ) {
@@ -22,8 +25,6 @@ class StreamServices {
   }
 
   Stream<List<PostDataModel>> getPostsByOrganizer(String uid) {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-
     return firestore
         .collection('post')
         .where('uid', isEqualTo: uid)
@@ -34,5 +35,13 @@ class StreamServices {
             return PostDataModel.fromMap(doc.data(), doc.id);
           }).toList();
         });
+  }
+
+  Stream<List<CouponData>> getCoupons() {
+    return firestore.collection('Coupons').snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return CouponData.fromMap(doc.data());
+      }).toList();
+    });
   }
 }

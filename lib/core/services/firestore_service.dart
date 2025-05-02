@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:travelgo_organizer/data/models/coupon_data.dart';
 import 'package:travelgo_organizer/data/models/organizer_data.dart';
 
 class FirestoreService {
@@ -22,5 +23,28 @@ class FirestoreService {
     firestore.collection('Organizers').doc(id).update({
       'role': 'pending-organizer',
     });
+  }
+
+  Future<void> uploadCoupon(CouponData coupon) async {
+    final doc = firestore.collection('Coupons').doc();
+    final docId = doc.id;
+    await doc.set(coupon.toMap(docId));
+  }
+
+  Future<void> updateCoupon(CouponData coupon) async {
+    await firestore
+        .collection('Coupons')
+        .doc(coupon.couponUid)
+        .update(coupon.toMap(coupon.couponUid));
+  }
+
+  Future<void> updateCouponStatus(CouponData coupon, bool isActive) async {
+    await firestore.collection('Coupons').doc(coupon.couponUid).update({
+      'isActive': isActive,
+    });
+  }
+
+  Future<void> deleteCoupon(String couponUid) async {
+    await firestore.collection('Coupons').doc(couponUid).delete();
   }
 }

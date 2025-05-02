@@ -130,3 +130,15 @@ class DeletePostAlertBox extends ActionState{
 }
 class DeletePostSuccess extends ActionState{}
 class DeletePostFail extends ActionState{}
+
+// Coupon
+class CreateCouponSuccess extends ActionState{}
+class CreateCouponFailed extends ActionState{}
+class EditCouponSucess extends ActionState{
+}
+class EditCouponFailed extends ActionState{}
+class CouponStatusSuccess extends ActionState{}
+class CouponStatusFailed extends ActionState{}
+
+class CouponDeleteSuccess extends ActionState{}
+class CouponDeleteFailed extends ActionState{}

@@ -56,15 +56,15 @@ class PostDataModel {
       'latitude': latitude,
       'longitude': longitude,
       'category': category,
-      'timestamp': FieldValue.serverTimestamp(), // optional
-      'isFeatured': isFeatured, // <-- Include when saving
+      'timestamp': FieldValue.serverTimestamp(), 
+      'isFeatured': isFeatured, 
       'postId': postId,
     };
   }
 
   factory PostDataModel.fromMap(Map<String, dynamic> map, String documentId) {
     return PostDataModel(
-      postId: documentId, // <-- assign doc ID manually
+      postId: documentId, 
       uid: map['uid'] ?? '',
       name: map['name'] ?? '',
       description: map['description'] ?? '',

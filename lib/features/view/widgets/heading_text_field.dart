@@ -10,6 +10,7 @@ class HeadingTextField extends StatelessWidget {
   final bool? readOnly;
   final Color? colortext;
   final Color? borderColor;
+  final TextInputType? keyboardType;
   const HeadingTextField({
     super.key,
     required this.headline,
@@ -18,7 +19,7 @@ class HeadingTextField extends StatelessWidget {
     this.validator,
     this.readOnly,
     this.colortext,
-    this.borderColor,
+    this.borderColor, this.keyboardType,
   });
 
   @override
@@ -35,6 +36,7 @@ class HeadingTextField extends StatelessWidget {
           ),
         ),
         TextFormField(
+          keyboardType: keyboardType,
           minLines: 1,
           maxLines: 20,
           readOnly: readOnly ?? false,

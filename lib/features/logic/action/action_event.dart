@@ -194,3 +194,30 @@ class DeletePostIntiated extends ActionEvent {
 
   DeletePostIntiated({required this.post});
 }
+
+/// Coupon - Events
+class CreateCoupon extends ActionEvent {
+  final CouponData coupon;
+
+  CreateCoupon({required this.coupon});
+}
+
+class EditCoupon extends ActionEvent {
+  final CouponData coupon;
+
+  EditCoupon({required this.coupon});
+}
+
+class CouponStatus extends ActionEvent {
+  final CouponData coupon;
+  final bool isActive;
+
+  CouponStatus({required this.isActive, required this.coupon});
+}
+
+class CouponDelete extends ActionEvent {
+  final String couponUid;
+
+  CouponDelete({required this.couponUid});
+
+}
