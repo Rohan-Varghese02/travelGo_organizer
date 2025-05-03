@@ -9,19 +9,21 @@ class StyleText extends StatelessWidget {
   final FontWeight? fontWeight;
   final TextOverflow? overflow;
   final int? maxLines;
+  final TextAlign? textAlign;
   const StyleText({
     super.key,
     required this.text,
     this.color,
     this.size,
     this.fontWeight,
-    this.decoration, this.overflow, this.maxLines,
+    this.decoration, this.overflow, this.maxLines, this.textAlign,
   });
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
+      textAlign: textAlign,
       overflow: overflow,
       maxLines: maxLines,
       style: GoogleFonts.poppins(

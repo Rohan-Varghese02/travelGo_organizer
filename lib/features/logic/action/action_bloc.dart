@@ -85,6 +85,8 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
 
     //Request --ActionBloc
     on<CreateRequest>(createRequest);
+    on<EditRequest>(editRequest);
+    on<RequestDelete>(requestDelete);
   }
 
   // Create Event --- Events
@@ -453,6 +455,33 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
       emit(CreateRequestSuccess(message: 'Successfully Created Request'));
     } catch (e) {
       emit(CreateRequestFailed(message: 'Error'));
+    }
+  }
+
+  FutureOr<void> editRequest(
+    EditRequest event,
+    Emitter<ActionState> emit,
+  ) async {
+    final request = event.request;
+    log('Started edit');
+    log(request.requestId.toString());
+    try {
+      await FirestoreService().editRequest(request);
+      emit(EditRequestSucess(message: 'Edit Successful'));
+    } catch (e) {
+      emit(EditRequestFailed(message: e.toString()));
+    }
+  }
+
+  FutureOr<void> requestDelete(
+    RequestDelete event,
+    Emitter<ActionState> emit,
+  ) async {
+    try {
+      await FirestoreService().deleteRequest(event.requestId);
+      emit(RequestDeleteSuccess(message: 'Deletion Successful'));
+    } catch (e) {
+      emit(RequestDeleteFailed(message: 'Deletion Unsucessful'));
     }
   }
 }

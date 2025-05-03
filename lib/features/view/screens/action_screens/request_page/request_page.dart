@@ -19,9 +19,30 @@ class RequestPage extends StatelessWidget {
     return BlocListener<ActionBloc, ActionState>(
       listenWhen:
           (previous, current) =>
-              current is CreateRequestSuccess || current is CreateRequestFailed,
+              current is CreateRequestSuccess ||
+              current is CreateRequestFailed ||
+              current is EditRequestSucess ||
+              current is EditRequestFailed ||
+              current is RequestDeleteSuccess ||
+              current is RequestDeleteFailed,
       listener: (context, state) {
         if (state is CreateRequestSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: StyleText(text: state.message, color: white),
+              backgroundColor: success,
+            ),
+          );
+        }
+        if (state is EditRequestSucess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: StyleText(text: state.message, color: white),
+              backgroundColor: success,
+            ),
+          );
+        }
+        if (state is RequestDeleteSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: StyleText(text: state.message, color: white),

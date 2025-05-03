@@ -54,4 +54,15 @@ class FirestoreService {
     String docId = doc.id;
     doc.set(request.toMap(docId));
   }
+
+  Future<void> editRequest(RequestData request) async {
+    await firestore
+        .collection('Requests')
+        .doc(request.requestId)
+        .update(request.toMap(request.requestId!));
+  }
+
+  Future<void> deleteRequest(String requestUid) async {
+    await firestore.collection('Requests').doc(requestUid).delete();
+  }
 }

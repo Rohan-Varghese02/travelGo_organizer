@@ -227,3 +227,14 @@ class CreateRequest extends ActionEvent {
 
   CreateRequest({required this.request});
 }
+class EditRequest extends ActionEvent {
+  final RequestData request;
+
+  EditRequest({required this.request});
+}
+
+class RequestDelete extends ActionEvent {
+  final String requestId;
+
+  RequestDelete({required this.requestId});
+}

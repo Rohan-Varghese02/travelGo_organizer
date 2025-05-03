@@ -161,3 +161,27 @@ class CreateRequestFailed extends ActionState {
 
   CreateRequestFailed({required this.message});
 }
+class EditRequestSucess extends ActionState {
+    final String message;
+
+  EditRequestSucess({required this.message});
+
+}
+
+class EditRequestFailed extends ActionState {
+    final String message;
+
+  EditRequestFailed({required this.message});
+
+}
+class RequestDeleteSuccess extends ActionState {
+  final String message;
+
+  RequestDeleteSuccess({required this.message});
+}
+
+class RequestDeleteFailed extends ActionState {
+  final String message;
+
+  RequestDeleteFailed({required this.message});
+}
