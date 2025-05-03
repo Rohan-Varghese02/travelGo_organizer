@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PostDataModel {
-  String postId; // <-- Add this
+  String postId; 
 
-  final String uid; // Organizer UID
+  final String uid; 
   final String name;
   final String description;
   final String venue;
@@ -18,7 +18,7 @@ class PostDataModel {
   final double longitude;
   final String category;
   final DateTime timestamp;
-  final bool isFeatured; // <-- Add this
+  final bool isFeatured; 
 
   PostDataModel({
     required this.postId,
@@ -37,7 +37,7 @@ class PostDataModel {
     required this.latitude,
     required this.longitude,
     required this.category,
-    this.isFeatured = false, // <-- Default value
+    this.isFeatured = false, 
   });
 
   Map<String, dynamic> toMap() {
@@ -88,7 +88,7 @@ class PostDataModel {
       latitude: (map['latitude'] as num).toDouble(),
       longitude: (map['longitude'] as num).toDouble(),
       category: map['category'] ?? '',
-      isFeatured: map['isFeatured'] ?? false, // <-- Fallback to false
+      isFeatured: map['isFeatured'] ?? false, 
       timestamp:
           map['timestamp'] != null
               ? (map['timestamp'] as Timestamp).toDate()

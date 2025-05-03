@@ -53,3 +53,9 @@ class CouponEventClicked extends UserEvent {
 
   CouponEventClicked({required this.organizerData});
 }
+
+class RequestEventClicked extends UserEvent {
+  final OrganizerDataModel organizerData;
+
+  RequestEventClicked({required this.organizerData});
+}

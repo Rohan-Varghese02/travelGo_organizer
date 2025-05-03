@@ -219,5 +219,11 @@ class CouponDelete extends ActionEvent {
   final String couponUid;
 
   CouponDelete({required this.couponUid});
+}
 
+// Request -- Events
+class CreateRequest extends ActionEvent {
+  final RequestData request;
+
+  CreateRequest({required this.request});
 }

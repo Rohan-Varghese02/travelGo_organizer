@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:travelgo_organizer/data/models/coupon_data.dart';
 import 'package:travelgo_organizer/data/models/organizer_data.dart';
+import 'package:travelgo_organizer/data/models/request_data.dart';
 
 class FirestoreService {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -46,5 +47,11 @@ class FirestoreService {
 
   Future<void> deleteCoupon(String couponUid) async {
     await firestore.collection('Coupons').doc(couponUid).delete();
+  }
+
+  Future<void> createRequest(RequestData request) async {
+    final doc = firestore.collection('Requests').doc();
+    String docId = doc.id;
+    doc.set(request.toMap(docId));
   }
 }

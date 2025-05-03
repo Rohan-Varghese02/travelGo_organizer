@@ -9,6 +9,7 @@ import 'package:travelgo_organizer/core/services/api_services.dart';
 import 'package:travelgo_organizer/core/services/firestore_service.dart';
 import 'package:travelgo_organizer/data/models/coupon_data.dart';
 import 'package:travelgo_organizer/data/models/post_data.dart';
+import 'package:travelgo_organizer/data/models/request_data.dart';
 
 part 'action_event.dart';
 part 'action_state.dart';
@@ -81,6 +82,9 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
     on<EditCoupon>(editCoupon);
     on<CouponStatus>(couponStatus);
     on<CouponDelete>(couponDelete);
+
+    //Request --ActionBloc
+    on<CreateRequest>(createRequest);
   }
 
   // Create Event --- Events
@@ -436,6 +440,19 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
       emit(CouponDeleteSuccess());
     } catch (e) {
       emit(CouponDeleteFailed());
+    }
+  }
+
+  FutureOr<void> createRequest(
+    CreateRequest event,
+    Emitter<ActionState> emit,
+  ) async {
+    final request = event.request;
+    try {
+      await FirestoreService().createRequest(request);
+      emit(CreateRequestSuccess(message: 'Successfully Created Request'));
+    } catch (e) {
+      emit(CreateRequestFailed(message: 'Error'));
     }
   }
 }

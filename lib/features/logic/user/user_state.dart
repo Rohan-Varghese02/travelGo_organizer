@@ -47,9 +47,14 @@ class ProfileDetailsFetched extends UserActionState {
 
 class CreateEventIntitated extends UserState {}
 
-class CouponEventIntiated extends UserState{
-    final OrganizerDataModel organizerData;
+class CouponEventIntiated extends UserState {
+  final OrganizerDataModel organizerData;
 
   CouponEventIntiated({required this.organizerData});
+}
 
+class RequestEventIntiated extends UserState {
+  final OrganizerDataModel organizerData;
+
+  RequestEventIntiated({required this.organizerData});
 }

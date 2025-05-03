@@ -7,6 +7,7 @@ import 'package:travelgo_organizer/core/services/stream_services.dart';
 import 'package:travelgo_organizer/data/models/organizer_data.dart';
 import 'package:travelgo_organizer/features/logic/action/action_bloc.dart';
 import 'package:travelgo_organizer/features/view/screens/action_screens/coupon_page/widgets/coupon_dailog.dart';
+import 'package:travelgo_organizer/features/view/screens/action_screens/coupon_page/widgets/coupon_floating_btn.dart';
 import 'package:travelgo_organizer/features/view/screens/action_screens/coupon_page/widgets/coupon_tile.dart';
 import 'package:travelgo_organizer/features/view/widgets/custom_app_bar.dart';
 import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
@@ -23,9 +24,8 @@ class CouponPage extends StatelessWidget {
               current is CreateCouponSuccess ||
               current is CreateCouponFailed ||
               current is EditCouponSucess ||
-              current is EditCouponFailed
-              || current is CouponDeleteSuccess
-              ,
+              current is EditCouponFailed ||
+              current is CouponDeleteSuccess,
       listener: (context, state) {
         log(state.runtimeType.toString());
         if (state is CreateCouponSuccess) {
@@ -51,7 +51,10 @@ class CouponPage extends StatelessWidget {
         if (state is CouponDeleteSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: StyleText(text: 'Coupon Deleted Successfully', color: white),
+              content: StyleText(
+                text: 'Coupon Deleted Successfully',
+                color: white,
+              ),
               backgroundColor: success,
             ),
           );
@@ -69,7 +72,13 @@ class CouponPage extends StatelessWidget {
             if (!snapshot.hasData ||
                 snapshot.data == null ||
                 snapshot.data!.isEmpty) {
-              return Center(child: CircularProgressIndicator());
+              return Center(
+                child: Center(
+                  child: StyleText(
+                    text: 'No Coupons added press + to add Coupon',
+                  ),
+                ),
+              );
             }
             final coupons = snapshot.data;
             return ListView.builder(
@@ -81,13 +90,7 @@ class CouponPage extends StatelessWidget {
             );
           },
         ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: themeColor,
-          onPressed: () {
-            showCouponCreationDialog(context, organizerData.uid);
-          },
-          child: Icon(Icons.add, color: white),
-        ),
+        floatingActionButton: CouponFloatingBtn(uid: organizerData.uid),
       ),
     );
   }

@@ -5,17 +5,19 @@ class TextFw extends StatelessWidget {
   final String firstword;
   final double? fontSize;
   final String secondWord;
+  final TextOverflow? overflow;
   const TextFw({
     super.key,
     required this.firstword,
     required this.secondWord,
     this.fontSize,
+    this.overflow,
   });
 
   @override
   Widget build(BuildContext context) {
     return Text.rich(
-      overflow: TextOverflow.ellipsis,
+      overflow: overflow,
       TextSpan(
         text: firstword,
         style: GoogleFonts.poppins(
@@ -29,6 +31,7 @@ class TextFw extends StatelessWidget {
           ),
         ],
       ),
+      softWrap: true,
     );
   }
 }

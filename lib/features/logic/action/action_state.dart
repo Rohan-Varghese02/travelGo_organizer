@@ -116,29 +116,48 @@ class UpdatePostIntiateState extends ActionState {
 
   UpdatePostIntiateState({required this.post});
 }
-class UpdatePostFailed extends ActionState{
 
-}
+class UpdatePostFailed extends ActionState {}
 
-class UpdatePostSuccess extends ActionState{}
-class UpdatePostFail extends ActionState{}
+class UpdatePostSuccess extends ActionState {}
 
-class DeletePostAlertBox extends ActionState{
+class UpdatePostFail extends ActionState {}
+
+class DeletePostAlertBox extends ActionState {
   final PostDataModel post;
 
   DeletePostAlertBox({required this.post});
 }
-class DeletePostSuccess extends ActionState{}
-class DeletePostFail extends ActionState{}
+
+class DeletePostSuccess extends ActionState {}
+
+class DeletePostFail extends ActionState {}
 
 // Coupon
-class CreateCouponSuccess extends ActionState{}
-class CreateCouponFailed extends ActionState{}
-class EditCouponSucess extends ActionState{
-}
-class EditCouponFailed extends ActionState{}
-class CouponStatusSuccess extends ActionState{}
-class CouponStatusFailed extends ActionState{}
+class CreateCouponSuccess extends ActionState {}
 
-class CouponDeleteSuccess extends ActionState{}
-class CouponDeleteFailed extends ActionState{}
+class CreateCouponFailed extends ActionState {}
+
+class EditCouponSucess extends ActionState {}
+
+class EditCouponFailed extends ActionState {}
+
+class CouponStatusSuccess extends ActionState {}
+
+class CouponStatusFailed extends ActionState {}
+
+class CouponDeleteSuccess extends ActionState {}
+
+class CouponDeleteFailed extends ActionState {}
+
+// Request -- State
+class CreateRequestSuccess extends ActionState {
+  final String message;
+
+  CreateRequestSuccess({required this.message});
+}
+class CreateRequestFailed extends ActionState {
+  final String message;
+
+  CreateRequestFailed({required this.message});
+}

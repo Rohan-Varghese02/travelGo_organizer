@@ -17,3 +17,4 @@ final whiteBg = Color(0xffFAFAFA);
 final errorred = Color(0xffFF001A);
 
 final success = Color.fromARGB(255, 71, 210, 16);
+final amberYellow = Color(0xffFFBF00);
