@@ -72,4 +72,15 @@ class FirestoreService {
     blogData.blogID = docID.id;
     docID.set(blogData.toMap());
   }
+
+  Future<void> editUploadBlog(BlogData blogdata, String blogID) async {
+    await firestore
+        .collection('Blogs')
+        .doc(blogdata.blogID)
+        .update(blogdata.toMap());
+  }
+
+  Future<void> deleteBlog(String blogId) async {
+    await firestore.collection('Blogs').doc(blogId).delete();
+  }
 }

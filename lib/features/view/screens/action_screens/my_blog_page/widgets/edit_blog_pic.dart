@@ -5,10 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
 import 'package:travelgo_organizer/features/logic/action/action_bloc.dart';
 
-class BlogPic extends StatelessWidget {
+class EditBlogPic extends StatelessWidget {
+  final String imageUrl;
   final String? imagePath;
 
-  const BlogPic({super.key, this.imagePath});
+  const EditBlogPic({super.key, this.imagePath, required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class BlogPic extends StatelessWidget {
       },
       child: Container(
         width: width,
-        height: 500,
+        height: 200,
         decoration: BoxDecoration(
           border: Border.all(color: themeColor),
           image:
@@ -29,13 +30,11 @@ class BlogPic extends StatelessWidget {
                     image: FileImage(File(imagePath!)),
                     fit: BoxFit.cover,
                   )
-                  : null,
+                  : DecorationImage(
+                    image: NetworkImage(imageUrl),
+                    fit: BoxFit.cover,
+                  ),
         ),
-
-        child:
-            (imagePath == null)
-                ? Center(child: Icon(Icons.camera_alt, size: 30))
-                : null,
       ),
     );
   }

@@ -259,3 +259,29 @@ class UploadBlog extends ActionEvent {
 
   UploadBlog({required this.blogData});
 }
+// ---- My Blogs --- events
+
+class EditBlogButton extends ActionEvent {
+  final BlogData blogData;
+
+  EditBlogButton({required this.blogData});
+}
+
+class EditBlog extends ActionEvent {
+  final String? imagePath;
+  final BlogData blogdata;
+
+  EditBlog({required this.imagePath, required this.blogdata});
+}
+
+class UploadEditBlog extends ActionEvent {
+  final BlogData editedBlogData;
+
+  UploadEditBlog({required this.editedBlogData});
+}
+
+class DeleteBlog extends ActionEvent {
+  final BlogData blogData;
+
+  DeleteBlog({required this.blogData});
+}

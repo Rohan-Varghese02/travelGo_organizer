@@ -194,9 +194,36 @@ class BlogPhotoUploadSucess extends ActionState {
 
   BlogPhotoUploadSucess({required this.blogData});
 }
-class BlogPhotoUploadError extends ActionState{
 
+class BlogPhotoUploadError extends ActionState {}
+
+class BlogUploadSuccess extends ActionState {}
+
+class BlogUploadFailed extends ActionState {}
+
+// My blogs---- State
+
+class NavigateToEditBlog extends ActionState {
+  final BlogData blogData;
+
+  NavigateToEditBlog({required this.blogData});
 }
-class BlogUploadSuccess extends ActionState{}
 
-class BlogUploadFailed extends ActionState{}
+class EditPartialDone extends ActionState {
+  final BlogData editedBlog;
+
+  EditPartialDone({required this.editedBlog});
+}
+
+class EditPartialFailed extends ActionState {
+  final String message;
+
+  EditPartialFailed({required this.message});
+}
+
+class EditBlogSuccessful extends ActionState {}
+
+class EditBlogFailed extends ActionState {}
+
+class DeleteBlogSuccess extends ActionState{}
+class DeleteBlogFailed extends ActionState{}

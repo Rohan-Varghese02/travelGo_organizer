@@ -68,7 +68,9 @@ class ActionSection extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            log('Create Event Clicked');
+            context.read<UserBloc>().add(
+              MyBlogClicked(organizerData: organizerData),
+            );
           },
           child: ActionTile(text: 'My Blog', assetImage: 'assets/myblog.png'),
         ),

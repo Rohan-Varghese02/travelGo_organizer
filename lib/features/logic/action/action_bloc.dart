@@ -92,6 +92,11 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
     on<ClearCoverImage>(clearCoverImage);
     on<UploadBlogPhoto>(uploadBlogPhoto);
     on<UploadBlog>(uploadBlog);
+    //My Blog
+    on<EditBlogButton>(editBlogButton);
+    on<EditBlog>(editBlog);
+    on<UploadEditBlog>(uploadEditBlog);
+    on<DeleteBlog>(deleteBlog);
   }
 
   // Create Event --- Events
@@ -527,6 +532,76 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
       emit(BlogUploadSuccess());
     } catch (e) {
       emit(BlogUploadFailed());
+    }
+  }
+
+  FutureOr<void> editBlogButton(
+    EditBlogButton event,
+    Emitter<ActionState> emit,
+  ) {
+    emit(NavigateToEditBlog(blogData: event.blogData));
+  }
+
+  FutureOr<void> editBlog(EditBlog event, Emitter<ActionState> emit) async {
+    final api = ApiServices();
+    String imagePublicId = event.blogdata.imageID;
+    String imageUrl = event.blogdata.imageUrl;
+    try {
+      log(event.imagePath.toString());
+      if (event.imagePath != null) {
+        if (event.blogdata.imageID.isNotEmpty) {
+          final deleted = await api.deleteImageFromCloudinary(
+            event.blogdata.imageID,
+          );
+          if (!deleted) {
+            log("Failed to delete old image.");
+          }
+        }
+        Map<String, String> url = await api.getUploadUrl(event.imagePath!);
+        imageUrl = url['imageUrl']!;
+        imagePublicId = url['publicId']!;
+      }
+      BlogData editedBlog = BlogData(
+        imageUrl: imageUrl,
+        imageID: imagePublicId,
+        blogDetails: event.blogdata.blogDetails,
+        organizerUID: event.blogdata.organizerUID,
+        blogID: event.blogdata.blogID,
+      );
+      log('Edit Success Partial');
+      emit(EditPartialDone(editedBlog: editedBlog));
+    } catch (e) {
+      log('Edit Failed Partial');
+      log(e.toString());
+      emit(EditPartialFailed(message: e.toString()));
+    }
+  }
+
+  FutureOr<void> uploadEditBlog(
+    UploadEditBlog event,
+    Emitter<ActionState> emit,
+  ) async {
+    log('Test ${event.editedBlogData.blogID.toString()}');
+    try {
+      await FirestoreService().editUploadBlog(
+        event.editedBlogData,
+        event.editedBlogData.blogID.toString(),
+      );
+      emit(EditBlogSuccessful());
+    } catch (e) {
+      log(e.toString());
+      emit(EditBlogFailed());
+    }
+  }
+
+  FutureOr<void> deleteBlog(DeleteBlog event, Emitter<ActionState> emit) async {
+    final api = ApiServices();
+    try {
+      await api.deleteImageFromCloudinary(event.blogData.blogID!);
+      await FirestoreService().deleteBlog(event.blogData.blogID!);
+      emit(DeleteBlogSuccess());
+    } catch (e) {
+      emit(DeleteBlogFailed());
     }
   }
 }

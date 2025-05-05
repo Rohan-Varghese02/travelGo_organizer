@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:travelgo_organizer/data/models/blog_data.dart';
 import 'package:travelgo_organizer/data/models/coupon_data.dart';
 import 'package:travelgo_organizer/data/models/organizer_data.dart';
 import 'package:travelgo_organizer/data/models/post_data.dart';
@@ -53,4 +54,12 @@ class StreamServices {
           .toList();
     });
   }
+
+  Stream<List<BlogData>> getBlog() {
+    return firestore.collection('Blogs').snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) => BlogData.fromMap(doc.data())).toList();
+    });
+  }
 }
+
+

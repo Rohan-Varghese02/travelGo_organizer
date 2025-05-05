@@ -154,5 +154,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   FutureOr<void> myBlogClicked(MyBlogClicked event, Emitter<UserState> emit) {
+    emit(MyBlogNavigateIntiate(organizerData: event.organizerData));
   }
 }

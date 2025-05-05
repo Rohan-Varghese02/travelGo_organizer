@@ -21,4 +21,14 @@ class BlogData {
       'blogID': blogID!,
     };
   }
+
+  factory BlogData.fromMap(Map<String, dynamic> map) {
+    return BlogData(
+      imageUrl: map['imageUrl'] ?? '',
+      imageID: map['imageID'],
+      blogDetails: map['blogDetails'],
+      organizerUID: map['organizerUID'],
+      blogID: map['blogID'] ?? 'no value',
+    );
+  }
 }

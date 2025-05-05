@@ -4,6 +4,7 @@ import 'package:travelgo_organizer/core/constants/colors.dart';
 import 'package:travelgo_organizer/data/models/coupon_data.dart';
 import 'package:travelgo_organizer/data/models/organizer_data.dart';
 import 'package:travelgo_organizer/features/logic/action/action_bloc.dart';
+import 'package:travelgo_organizer/features/view/screens/action_screens/coupon_page/widgets/delete_coupon_dailog.dart';
 import 'package:travelgo_organizer/features/view/screens/action_screens/coupon_page/widgets/edit_copuon_dailog.dart';
 import 'package:travelgo_organizer/features/view/widgets/text_fw.dart';
 
@@ -66,9 +67,10 @@ class CouponTile extends StatelessWidget {
                           coupon,
                         );
                       } else if (value == 'delete') {
-                        context.read<ActionBloc>().add(
-                          CouponDelete(couponUid: coupon.couponUid!),
-                        );
+                        deleteCouponDailog(context, coupon.couponUid!, coupon.codeName);
+                        // context.read<ActionBloc>().add(
+                        //   CouponDelete(couponUid: coupon.couponUid!),
+                        // );
                       }
                     },
                     itemBuilder:

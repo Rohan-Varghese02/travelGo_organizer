@@ -65,4 +65,9 @@ class CreateBlogNavigateIntiate extends UserState{
 
   CreateBlogNavigateIntiate({required this.organizerData});
 }
-class MyBlogNavigateIntiate extends UserState{}
+class MyBlogNavigateIntiate extends UserState{
+      final OrganizerDataModel organizerData;
+
+  MyBlogNavigateIntiate({required this.organizerData});
+
+}

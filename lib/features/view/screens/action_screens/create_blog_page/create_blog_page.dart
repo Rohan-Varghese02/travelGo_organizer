@@ -60,16 +60,18 @@ class CreateBlogPage extends StatelessWidget {
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(10.0),
-              child: Column(
-                children: [
-                  BlogPic(imagePath: imagePath),
-                  imagePath != null
-                      ? BlogFooter(
-                        organizerUid: organizerData.uid,
-                        imagePath: imagePath,
-                      )
-                      : SizedBox(),
-                ],
+              child: Center(
+                child: Column(
+                  children: [
+                    BlogPic(imagePath: imagePath),
+                    imagePath != null
+                        ? BlogFooter(
+                          organizerUid: organizerData.uid,
+                          imagePath: imagePath,
+                        )
+                        : SizedBox(),
+                  ],
+                ),
               ),
             ),
           ),
