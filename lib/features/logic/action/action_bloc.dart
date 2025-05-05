@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 import 'package:travelgo_organizer/core/services/api_services.dart';
 import 'package:travelgo_organizer/core/services/firestore_service.dart';
+import 'package:travelgo_organizer/data/models/blog_data.dart';
 import 'package:travelgo_organizer/data/models/coupon_data.dart';
 import 'package:travelgo_organizer/data/models/post_data.dart';
 import 'package:travelgo_organizer/data/models/request_data.dart';
@@ -87,6 +88,10 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
     on<CreateRequest>(createRequest);
     on<EditRequest>(editRequest);
     on<RequestDelete>(requestDelete);
+    // Create Blog
+    on<ClearCoverImage>(clearCoverImage);
+    on<UploadBlogPhoto>(uploadBlogPhoto);
+    on<UploadBlog>(uploadBlog);
   }
 
   // Create Event --- Events
@@ -482,6 +487,46 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
       emit(RequestDeleteSuccess(message: 'Deletion Successful'));
     } catch (e) {
       emit(RequestDeleteFailed(message: 'Deletion Unsucessful'));
+    }
+  }
+
+  FutureOr<void> clearCoverImage(
+    ClearCoverImage event,
+    Emitter<ActionState> emit,
+  ) {
+    emit(CoverImageCleared());
+  }
+
+  FutureOr<void> uploadBlogPhoto(
+    UploadBlogPhoto event,
+    Emitter<ActionState> emit,
+  ) async {
+    final apiservices = ApiServices();
+    try {
+      Map<String, String> urls = await apiservices.getUploadUrl(
+        event.imagePath,
+      );
+      String? imageUrl = urls['imageUrl'];
+      String? imagePublicID = urls['publicId'];
+      BlogData blogData = BlogData(
+        imageUrl: imageUrl!,
+        imageID: imagePublicID!,
+        blogDetails: event.postDetails,
+        organizerUID: event.organizerUID,
+      );
+      emit(BlogPhotoUploadSucess(blogData: blogData));
+    } catch (e) {
+      emit(BlogPhotoUploadError());
+    }
+  }
+
+  FutureOr<void> uploadBlog(UploadBlog event, Emitter<ActionState> emit) async {
+    final firestore = FirestoreService();
+    try {
+      await firestore.uploadBlog(event.blogData);
+      emit(BlogUploadSuccess());
+    } catch (e) {
+      emit(BlogUploadFailed());
     }
   }
 }

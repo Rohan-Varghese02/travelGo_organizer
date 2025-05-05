@@ -227,6 +227,7 @@ class CreateRequest extends ActionEvent {
 
   CreateRequest({required this.request});
 }
+
 class EditRequest extends ActionEvent {
   final RequestData request;
 
@@ -237,4 +238,24 @@ class RequestDelete extends ActionEvent {
   final String requestId;
 
   RequestDelete({required this.requestId});
+}
+
+class ClearCoverImage extends ActionEvent {}
+
+class UploadBlogPhoto extends ActionEvent {
+  final String imagePath;
+  final String postDetails;
+  final String organizerUID;
+
+  UploadBlogPhoto({
+    required this.imagePath,
+    required this.postDetails,
+    required this.organizerUID,
+  });
+}
+
+class UploadBlog extends ActionEvent {
+  final BlogData blogData;
+
+  UploadBlog({required this.blogData});
 }

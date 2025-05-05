@@ -2,8 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:travelgo_organizer/features/logic/action/action_bloc.dart';
 import 'package:travelgo_organizer/features/logic/user/user_bloc.dart';
 import 'package:travelgo_organizer/features/view/screens/action_screens/coupon_page/coupon_page.dart';
+import 'package:travelgo_organizer/features/view/screens/action_screens/create_blog_page/create_blog_page.dart';
 import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/create_event_screen.dart';
 import 'package:travelgo_organizer/features/view/screens/action_screens/request_page/request_page.dart';
 import 'package:travelgo_organizer/features/view/screens/main_screens/pages/home_page/widgets/action_section.dart';
@@ -51,6 +53,19 @@ class _HomePageState extends State<HomePage> {
                   (context) => RequestPage(organizerData: state.organizerData),
             ),
           );
+        } else if (state is CreateBlogNavigateIntiate) {
+          Navigator.of(context)
+              .push(
+                MaterialPageRoute(
+                  builder:
+                      (context) =>
+                          CreateBlogPage(organizerData: state.organizerData),
+                ),
+              )
+              .then((_) {
+                // ignore: use_build_context_synchronously
+                context.read<ActionBloc>().add(ClearCoverImage());
+              });
         }
       },
       builder: (context, state) {

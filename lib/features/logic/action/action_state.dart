@@ -156,24 +156,25 @@ class CreateRequestSuccess extends ActionState {
 
   CreateRequestSuccess({required this.message});
 }
+
 class CreateRequestFailed extends ActionState {
   final String message;
 
   CreateRequestFailed({required this.message});
 }
+
 class EditRequestSucess extends ActionState {
-    final String message;
+  final String message;
 
   EditRequestSucess({required this.message});
-
 }
 
 class EditRequestFailed extends ActionState {
-    final String message;
+  final String message;
 
   EditRequestFailed({required this.message});
-
 }
+
 class RequestDeleteSuccess extends ActionState {
   final String message;
 
@@ -185,3 +186,17 @@ class RequestDeleteFailed extends ActionState {
 
   RequestDeleteFailed({required this.message});
 }
+
+class CoverImageCleared extends ActionState {}
+
+class BlogPhotoUploadSucess extends ActionState {
+  final BlogData blogData;
+
+  BlogPhotoUploadSucess({required this.blogData});
+}
+class BlogPhotoUploadError extends ActionState{
+
+}
+class BlogUploadSuccess extends ActionState{}
+
+class BlogUploadFailed extends ActionState{}

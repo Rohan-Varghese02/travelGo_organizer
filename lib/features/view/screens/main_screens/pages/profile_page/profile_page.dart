@@ -79,6 +79,7 @@ class _ProfilePageState extends State<ProfilePage> {
               title: 'Profile',
               color: themeColor,
               center: true,
+              showBack: false,
               actions: [
                 IconButton(
                   onPressed: () {

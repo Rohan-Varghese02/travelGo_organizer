@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:travelgo_organizer/data/models/blog_data.dart';
 import 'package:travelgo_organizer/data/models/coupon_data.dart';
 import 'package:travelgo_organizer/data/models/organizer_data.dart';
 import 'package:travelgo_organizer/data/models/request_data.dart';
@@ -64,5 +65,11 @@ class FirestoreService {
 
   Future<void> deleteRequest(String requestUid) async {
     await firestore.collection('Requests').doc(requestUid).delete();
+  }
+
+  Future<void> uploadBlog(BlogData blogData) async {
+    final docID = firestore.collection('Blogs').doc();
+    blogData.blogID = docID.id;
+    docID.set(blogData.toMap());
   }
 }

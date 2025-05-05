@@ -58,3 +58,11 @@ class RequestEventIntiated extends UserState {
 
   RequestEventIntiated({required this.organizerData});
 }
+
+// Create Blog --State
+class CreateBlogNavigateIntiate extends UserState{
+    final OrganizerDataModel organizerData;
+
+  CreateBlogNavigateIntiate({required this.organizerData});
+}
+class MyBlogNavigateIntiate extends UserState{}
