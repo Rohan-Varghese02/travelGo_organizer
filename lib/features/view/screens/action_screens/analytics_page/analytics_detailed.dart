@@ -4,7 +4,6 @@ import 'package:travelgo_organizer/data/models/revenue_data.dart';
 import 'package:travelgo_organizer/features/view/screens/action_screens/analytics_page/widgets/analytics_header.dart';
 import 'package:travelgo_organizer/features/view/screens/action_screens/analytics_page/widgets/ticket_analytics.dart';
 import 'package:travelgo_organizer/features/view/widgets/custom_app_bar.dart';
-import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
 class AnalyticsDetailed extends StatelessWidget {
   final RevenueModel revenue;

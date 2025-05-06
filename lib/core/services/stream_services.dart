@@ -5,6 +5,7 @@ import 'package:travelgo_organizer/data/models/organizer_data.dart';
 import 'package:travelgo_organizer/data/models/post_data.dart';
 import 'package:travelgo_organizer/data/models/request_data.dart';
 import 'package:travelgo_organizer/data/models/revenue_data.dart';
+import 'package:travelgo_organizer/data/models/userdata.dart';
 
 class StreamServices {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -71,6 +72,19 @@ class StreamServices {
         .map((snapshot) {
           return snapshot.docs
               .map((doc) => RevenueModel.fromMap(doc.data()))
+              .toList();
+        });
+  }
+
+  Stream<List<Userdata>> getClients(String postID) {
+    return firestore
+        .collection('post')
+        .doc(postID)
+        .collection('users')
+        .snapshots()
+        .map((snapshot) {
+          return snapshot.docs
+              .map((doc) => Userdata.fromMap(doc.data()))
               .toList();
         });
   }

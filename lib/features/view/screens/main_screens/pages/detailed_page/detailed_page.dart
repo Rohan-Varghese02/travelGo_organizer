@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
 import 'package:travelgo_organizer/data/models/post_data.dart';
+import 'package:travelgo_organizer/features/view/screens/main_screens/pages/detailed_page/user_display_page.dart';
 import 'package:travelgo_organizer/features/view/screens/main_screens/pages/detailed_page/widgets/about_benefits.dart';
 import 'package:travelgo_organizer/features/view/screens/main_screens/pages/detailed_page/widgets/detailed_app_bar.dart';
 import 'package:travelgo_organizer/features/view/screens/main_screens/pages/detailed_page/widgets/event_pic.dart';
@@ -54,7 +55,15 @@ class DetailedPage extends StatelessWidget {
                       SizedBox(height: 20),
                       LongButton(
                         text: 'Clicked here to see registered clients',
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder:
+                                  (context) =>
+                                      UserDisplayPage(postId: post.postId),
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
