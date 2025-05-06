@@ -60,14 +60,20 @@ class RequestEventIntiated extends UserState {
 }
 
 // Create Blog --State
-class CreateBlogNavigateIntiate extends UserState{
-    final OrganizerDataModel organizerData;
+class CreateBlogNavigateIntiate extends UserState {
+  final OrganizerDataModel organizerData;
 
   CreateBlogNavigateIntiate({required this.organizerData});
 }
-class MyBlogNavigateIntiate extends UserState{
-      final OrganizerDataModel organizerData;
+
+class MyBlogNavigateIntiate extends UserState {
+  final OrganizerDataModel organizerData;
 
   MyBlogNavigateIntiate({required this.organizerData});
+}
 
+class AnalyticsNavigateIntiate extends UserState {
+  final OrganizerDataModel organizerData;
+
+  AnalyticsNavigateIntiate({required this.organizerData});
 }

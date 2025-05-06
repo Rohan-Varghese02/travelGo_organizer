@@ -281,7 +281,13 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
       final postRef = FirebaseFirestore.instance.collection('post').doc();
       post.postId = postRef.id;
       await postRef.set(post.toMap());
-
+      await FirestoreService().initializeRevenueData(
+        organizerUid: post.uid,
+        postId: post.postId,
+        ticketMap: post.tickets,
+        postName: post.name,
+        postImage: post.imageUrl,
+      );
       log("Post uploaded: ${postRef.id}");
       emit(UploadPostSuccess());
     } catch (e) {
@@ -364,6 +370,27 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
 
       await postRef.update(post.toMap());
 
+      final revenueRef = FirebaseFirestore.instance
+          .collection('revenue')
+          .doc(post.uid)
+          .collection('posts')
+          .doc(post.postId);
+
+      final updatedTicketMap = {
+        for (var type in post.tickets.keys)
+          type: {'revenue': 0, 'soldCount': 0},
+      };
+
+      final revenueDoc = await revenueRef.get();
+
+      if (revenueDoc.exists) {
+        await revenueRef.update({
+          'postName': post.name,
+          'postImage': post.imageUrl,
+          'revenueByTicketType': updatedTicketMap,
+        });
+      }
+
       log("Post updted: ${postRef.id}");
       emit(UpdatePostSuccess());
     } catch (e) {
@@ -391,9 +418,13 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
     }
     try {
       await FirebaseFirestore.instance
-          .collection('posts')
+          .collection('revenue')
           .doc(post.uid)
           .collection('posts')
+          .doc(post.postId)
+          .delete();
+      await FirebaseFirestore.instance
+          .collection('post')
           .doc(post.postId)
           .delete();
       log("Post deleted successfully");

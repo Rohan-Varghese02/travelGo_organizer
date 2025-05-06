@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travelgo_organizer/features/logic/action/action_bloc.dart';
 import 'package:travelgo_organizer/features/logic/user/user_bloc.dart';
+import 'package:travelgo_organizer/features/view/screens/action_screens/analytics_page/analytics_page.dart';
 import 'package:travelgo_organizer/features/view/screens/action_screens/coupon_page/coupon_page.dart';
 import 'package:travelgo_organizer/features/view/screens/action_screens/create_blog_page/create_blog_page.dart';
 import 'package:travelgo_organizer/features/view/screens/action_screens/create_event_page/create_event_screen.dart';
@@ -72,6 +73,14 @@ class _HomePageState extends State<HomePage> {
             MaterialPageRoute(
               builder:
                   (context) => MyBlogPage(organizerData: state.organizerData),
+            ),
+          );
+        } else if (state is AnalyticsNavigateIntiate) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder:
+                  (context) =>
+                      AnalyticsPage(organizerData: state.organizerData),
             ),
           );
         }

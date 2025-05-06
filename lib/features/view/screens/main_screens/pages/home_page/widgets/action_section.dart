@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travelgo_organizer/data/models/organizer_data.dart';
@@ -32,7 +30,9 @@ class ActionSection extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            log('Analytics');
+            context.read<UserBloc>().add(
+              AnalyticsClicked(organizerData: organizerData),
+            );
           },
           child: ActionTile(
             text: 'Analytics',

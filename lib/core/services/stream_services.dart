@@ -4,6 +4,7 @@ import 'package:travelgo_organizer/data/models/coupon_data.dart';
 import 'package:travelgo_organizer/data/models/organizer_data.dart';
 import 'package:travelgo_organizer/data/models/post_data.dart';
 import 'package:travelgo_organizer/data/models/request_data.dart';
+import 'package:travelgo_organizer/data/models/revenue_data.dart';
 
 class StreamServices {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -60,6 +61,17 @@ class StreamServices {
       return snapshot.docs.map((doc) => BlogData.fromMap(doc.data())).toList();
     });
   }
+
+  Stream<List<RevenueModel>> getRevenue(String organizerID) {
+    return firestore
+        .collection('revenue')
+        .doc(organizerID)
+        .collection('posts')
+        .snapshots()
+        .map((snapshot) {
+          return snapshot.docs
+              .map((doc) => RevenueModel.fromMap(doc.data()))
+              .toList();
+        });
+  }
 }
-
-

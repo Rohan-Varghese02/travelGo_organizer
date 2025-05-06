@@ -61,16 +61,22 @@ class RequestEventClicked extends UserEvent {
 }
 
 // Create Blog --Events
-class CreateBlogClicked extends UserEvent{
-    final OrganizerDataModel organizerData;
+class CreateBlogClicked extends UserEvent {
+  final OrganizerDataModel organizerData;
 
   CreateBlogClicked({required this.organizerData});
-
 }
 
-class MyBlogClicked extends UserEvent{
-      final OrganizerDataModel organizerData;
+class MyBlogClicked extends UserEvent {
+  final OrganizerDataModel organizerData;
 
   MyBlogClicked({required this.organizerData});
+}
 
+// Analytics
+
+class AnalyticsClicked extends UserEvent {
+  final OrganizerDataModel organizerData;
+
+  AnalyticsClicked({required this.organizerData});
 }

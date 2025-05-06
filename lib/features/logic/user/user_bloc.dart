@@ -27,6 +27,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<RequestEventClicked>(requestEventClicked);
     on<CreateBlogClicked>(createBlogClicked);
     on<MyBlogClicked>(myBlogClicked);
+    on<AnalyticsClicked>(analyticsClicked);
   }
 
   // Profile Page ------- Edit Logic
@@ -155,5 +156,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   FutureOr<void> myBlogClicked(MyBlogClicked event, Emitter<UserState> emit) {
     emit(MyBlogNavigateIntiate(organizerData: event.organizerData));
+  }
+
+  FutureOr<void> analyticsClicked(
+    AnalyticsClicked event,
+    Emitter<UserState> emit,
+  ) {
+    emit(AnalyticsNavigateIntiate(organizerData: event.organizerData));
   }
 }

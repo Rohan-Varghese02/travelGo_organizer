@@ -83,4 +83,34 @@ class FirestoreService {
   Future<void> deleteBlog(String blogId) async {
     await firestore.collection('Blogs').doc(blogId).delete();
   }
+
+  Future<void> initializeRevenueData({
+    required String organizerUid,
+    required String postId,
+    required String postName,
+    required String postImage,
+    required Map<String, Map<String, int>> ticketMap,
+  }) async {
+    final revenueRef = FirebaseFirestore.instance
+        .collection('revenue')
+        .doc(organizerUid)
+        .collection('posts')
+        .doc(postId);
+
+    final revenueByTicketType = {
+      for (var type in ticketMap.keys) type: {'revenue': 0, 'soldCount': 0},
+    };
+
+    final revenueData = {
+      'postId': postId,
+      'postName': postName,
+      'postImage': postImage,
+      'totalRevenue': 0,
+      'totalTicketsSold': 0,
+      'revenueByTicketType': revenueByTicketType,
+      'createdAt': FieldValue.serverTimestamp(),
+    };
+
+    await revenueRef.set(revenueData);
+  }
 }

@@ -80,6 +80,7 @@ class _CreateNextPageState extends State<CreateNextPage> {
           context.read<ActionBloc>().add(UploadPostEvent(post: post));
         }
         if (state is UploadPostSuccess) {
+          
           WidgetsBinding.instance.addPostFrameCallback((_) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
