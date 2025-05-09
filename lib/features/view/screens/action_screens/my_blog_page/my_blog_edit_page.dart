@@ -116,6 +116,7 @@ class _MyBlogEditPageState extends State<MyBlogEditPage> {
                           onPressed: () {
                             log(widget.blogData.blogID.toString());
                             final editedBlogData = BlogData(
+                              organizerImage: widget.blogData.organizerImage,
                               imageUrl: widget.blogData.imageUrl,
                               imageID: widget.blogData.imageID,
                               blogDetails: detailsController.text,

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:travelgo_organizer/data/models/blog_data.dart';
+import 'package:travelgo_organizer/data/models/chat_data.dart';
 import 'package:travelgo_organizer/data/models/coupon_data.dart';
 import 'package:travelgo_organizer/data/models/organizer_data.dart';
 import 'package:travelgo_organizer/data/models/post_data.dart';
@@ -85,6 +86,19 @@ class StreamServices {
         .map((snapshot) {
           return snapshot.docs
               .map((doc) => Userdata.fromMap(doc.data()))
+              .toList();
+        });
+  }
+
+  Stream<List<ChatData>> getChat(String organuierUid) {
+    return firestore
+        .collection('UserChatrooms')
+        .doc(organuierUid)
+        .collection('Users')
+        .snapshots()
+        .map((snapshot) {
+          return snapshot.docs
+              .map((doc) => ChatData.fromFirestore(doc.data()))
               .toList();
         });
   }

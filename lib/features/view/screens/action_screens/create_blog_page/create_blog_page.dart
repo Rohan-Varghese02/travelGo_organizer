@@ -66,8 +66,9 @@ class CreateBlogPage extends StatelessWidget {
                     BlogPic(imagePath: imagePath),
                     imagePath != null
                         ? BlogFooter(
+                          
                           organizerUid: organizerData.uid,
-                          imagePath: imagePath,
+                          imagePath: imagePath, organizerImage: organizerData.imageUrl,
                         )
                         : SizedBox(),
                   ],

@@ -246,11 +246,13 @@ class UploadBlogPhoto extends ActionEvent {
   final String imagePath;
   final String postDetails;
   final String organizerUID;
+  final String organizerImage;
 
   UploadBlogPhoto({
     required this.imagePath,
     required this.postDetails,
     required this.organizerUID,
+    required this.organizerImage,
   });
 }
 

@@ -6,10 +6,11 @@ import 'package:travelgo_organizer/features/view/widgets/heading_text_field.dart
 import 'package:travelgo_organizer/features/view/widgets/square_elevated_btn.dart';
 
 class BlogFooter extends StatelessWidget {
+  final String organizerImage;
   final String organizerUid;
   final String? imagePath;
 
-  const BlogFooter({super.key, this.imagePath, required this.organizerUid});
+  const BlogFooter({super.key, this.imagePath, required this.organizerUid, required this.organizerImage});
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +49,7 @@ class BlogFooter extends StatelessWidget {
                   if (keyState.currentState!.validate()) {
                     context.read<ActionBloc>().add(
                       UploadBlogPhoto(
+                        organizerImage: organizerImage,
                         imagePath: imagePath!,
                         postDetails: blogDescription.text,
                         organizerUID: organizerUid,

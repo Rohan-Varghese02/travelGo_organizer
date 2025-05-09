@@ -17,7 +17,7 @@ class MainScreen extends StatelessWidget {
     final List<Widget> screens = [
       HomePage(),
       MyEventPage(),
-      ChatPage(),
+      ChatPage(organizerData: organizerData,),
       ProfilePage(),
     ];
     return BlocBuilder<NavbarBloc, NavbarState>(

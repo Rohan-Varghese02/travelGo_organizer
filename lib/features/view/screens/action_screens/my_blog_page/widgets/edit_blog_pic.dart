@@ -21,7 +21,7 @@ class EditBlogPic extends StatelessWidget {
       },
       child: Container(
         width: width,
-        height: 200,
+        height: 500,
         decoration: BoxDecoration(
           border: Border.all(color: themeColor),
           image:

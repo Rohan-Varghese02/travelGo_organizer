@@ -545,6 +545,7 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
       String? imageUrl = urls['imageUrl'];
       String? imagePublicID = urls['publicId'];
       BlogData blogData = BlogData(
+        organizerImage: event.organizerImage,
         imageUrl: imageUrl!,
         imageID: imagePublicID!,
         blogDetails: event.postDetails,
@@ -593,6 +594,7 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
         imagePublicId = url['publicId']!;
       }
       BlogData editedBlog = BlogData(
+        organizerImage: event.blogdata.organizerImage,
         imageUrl: imageUrl,
         imageID: imagePublicId,
         blogDetails: event.blogdata.blogDetails,
