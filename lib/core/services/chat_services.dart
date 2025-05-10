@@ -18,13 +18,7 @@ class ChatServices {
     List<String> id = [currentUserID, recieverID];
     id.sort(); // this is to have same id for both receiver and sender
     String chatRoomID = id.join('_');
-
-    // add new message to database
-    // firebaseFirestore
-    //     .collection('chat_rooms')
-    //     .doc(chatRoomID)
-    //     .collection('message')
-    //     .add(newMessage.toMap());
+    
     final docId =
         firebaseFirestore
             .collection('chat_rooms')

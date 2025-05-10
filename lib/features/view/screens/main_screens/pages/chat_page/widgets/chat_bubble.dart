@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:travelgo_organizer/core/constants/colors.dart';
 import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
-
 class ChatBubble extends StatelessWidget {
   final Timestamp timestamp;
   final String message;
@@ -37,7 +36,18 @@ class ChatBubble extends StatelessWidget {
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: isCurrentUser ? themeColor : white,
-                borderRadius: BorderRadius.circular(10),
+                borderRadius:
+                    isCurrentUser
+                        ? BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                          bottomLeft: Radius.circular(10),
+                        )
+                        : BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
+                        ),
                 border:
                     isCurrentUser
                         ? null

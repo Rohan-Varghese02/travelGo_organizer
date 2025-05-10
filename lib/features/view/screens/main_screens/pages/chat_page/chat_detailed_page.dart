@@ -133,7 +133,16 @@ class _ChatDetailedPageState extends State<ChatDetailedPage> {
                       if (index == counter) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Center(child: StyleText(text: date)),
+                          child: Center(
+                            child: Container(
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: grey20,
+                              ),
+                              child: StyleText(text: date),
+                            ),
+                          ),
                         );
                       }
 

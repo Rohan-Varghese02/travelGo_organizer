@@ -4,7 +4,6 @@ import 'package:travelgo_organizer/core/constants/colors.dart';
 import 'package:travelgo_organizer/data/models/chat_data.dart';
 import 'package:travelgo_organizer/features/view/widgets/style_text.dart';
 
-
 class ChatTile extends StatelessWidget {
   final ChatData chatData;
   const ChatTile({super.key, required this.chatData});
@@ -29,7 +28,10 @@ class ChatTile extends StatelessWidget {
                   text: chatData.lastMessage,
                   fontWeight: FontWeight.bold,
                 ),
-        trailing: StyleText(text: timeText),
+        trailing:
+            chatData.lastMessagebool
+                ? StyleText(text: timeText)
+                : Icon(Icons.circle_notifications, color: success),
       ),
     );
   }
