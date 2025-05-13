@@ -33,10 +33,14 @@ class MyBlogTile extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              StyleText(
-                text: blogData.blogDetails,
-                fontWeight: FontWeight.bold,
-                size: 20,
+              SizedBox(
+                width: width * 0.7,
+                child: StyleText(
+                  text: blogData.blogDetails,
+                  fontWeight: FontWeight.bold,
+                  size: 20,
+                  softWrap: true,
+                ),
               ),
               PopupMenuButton(
                 onSelected: (value) {

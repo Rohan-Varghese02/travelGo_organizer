@@ -42,13 +42,13 @@ class AnalyticsTile extends StatelessWidget {
                 children: [
                   StyleText(
                     text: revenueData.postName,
-                    size: 20,
+                    size: 16,
                     fontWeight: FontWeight.w500,
                   ),
                   SizedBox(height: 5),
                   StyleText(
                     text: 'Ticket Sold: ${revenueData.totalTicketsSold}',
-                    size: 15,
+                    size: 13,
                     fontWeight: FontWeight.w500,
                   ),
                   SizedBox(height: 5),
@@ -56,7 +56,7 @@ class AnalyticsTile extends StatelessWidget {
                   StyleText(
                     text:
                         'Ticket Variants: ${revenueData.revenueByTicketType.length}',
-                    size: 15,
+                    size: 13,
                     fontWeight: FontWeight.w500,
                   ),
                 ],

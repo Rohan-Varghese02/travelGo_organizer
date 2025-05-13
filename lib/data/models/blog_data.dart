@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class BlogData {
   final String imageUrl;
   final String imageID;
   final String blogDetails;
   final String organizerUID;
   final String organizerImage;
+  final DateTime? date;
   String? blogID;
 
   BlogData({
@@ -13,15 +16,17 @@ class BlogData {
     required this.organizerUID,
     required this.organizerImage,
     this.blogID,
+    this.date,
   });
-  Map<String, String> toMap() {
+  Map<String, dynamic> toMap() {
     return {
-      'organizerImage':organizerImage,
+      'organizerImage': organizerImage,
       'imageUrl': imageUrl,
       'imageID': imageID,
       'blogDetails': blogDetails,
       'organizerUID': organizerUID,
       'blogID': blogID!,
+      'date': DateTime.now(),
     };
   }
 
@@ -33,6 +38,12 @@ class BlogData {
       blogDetails: map['blogDetails'],
       organizerUID: map['organizerUID'],
       blogID: map['blogID'] ?? 'no value',
+      date:
+          map['date'] != null
+              ? (map['date'] is Timestamp
+                  ? (map['date'] as Timestamp).toDate()
+                  : DateTime.tryParse(map['date'].toString()))
+              : null,
     );
   }
 }

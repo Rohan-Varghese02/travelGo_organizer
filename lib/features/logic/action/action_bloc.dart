@@ -289,6 +289,11 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
         postImage: post.imageUrl,
       );
       log("Post uploaded: ${postRef.id}");
+      final organizerRef = FirebaseFirestore.instance
+          .collection('Organizers')
+          .doc(post.uid);
+      await organizerRef.update({'eventHosted': FieldValue.increment(1)});
+
       emit(UploadPostSuccess());
     } catch (e) {
       log("Error uploading post: $e");
@@ -427,6 +432,11 @@ class ActionBloc extends Bloc<ActionEvent, ActionState> {
           .collection('post')
           .doc(post.postId)
           .delete();
+      final organizerRef = FirebaseFirestore.instance
+          .collection('Organizers')
+          .doc(post.uid);
+      await organizerRef.update({'eventHosted': FieldValue.increment(-1)});
+
       log("Post deleted successfully");
       emit(DeletePostSuccess());
     } catch (e) {
