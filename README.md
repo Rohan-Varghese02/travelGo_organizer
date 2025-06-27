@@ -1,4 +1,4 @@
-# 🛠️ TravLGO Organizer
+# TravLGO Organizer
 
 **TravLGO Organizer** is the companion **event management application** for event organizers using **TravLGO**. Built with **Flutter**, this app empowers organizers to manage events, post blogs, communicate with platform admins, track analytics, and generate custom coupon codes—all in one place.
 
